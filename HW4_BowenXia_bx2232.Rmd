@@ -1,0 +1,971 @@
+---
+title: "P8130 Biostatistics Homework 4"
+author: "Bowen Xia (UNI: bx2232)"
+date: "November 25, 2025"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    fig_caption: true
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, 
+                      fig.width = 8, fig.height = 6)
+
+# Load required libraries
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(broom)
+library(ggplot2)
+library(patchwork)
+
+# Set theme for plots
+theme_set(theme_minimal())
+```
+
+\newpage
+
+# Problem 1: Blood Sugar Analysis (10 points)
+
+## Problem Statement
+
+A new blood sugar monitoring device is being evaluated. We have data from 25 patients with similar blood sugar distributions. We need to test whether there is significant evidence ($\alpha = 0.05$) that the median blood sugar reading is less than 120 in the population.
+
+## Data
+
+```{r problem1-data}
+# Blood sugar data
+blood_sugar <- c(125, 123, 117, 123, 115, 112, 128, 118, 124, 111, 116, 109, 125,
+                 120, 113, 123, 112, 118, 121, 118, 122, 115, 105, 118, 131)
+
+# Summary statistics
+cat("Sample size:", length(blood_sugar), "\n")
+cat("Mean:", round(mean(blood_sugar), 2), "\n")
+cat("Median:", round(median(blood_sugar), 2), "\n")
+cat("Standard deviation:", round(sd(blood_sugar), 2), "\n")
+cat("Range:", min(blood_sugar), "-", max(blood_sugar), "\n")
+```
+
+## Part a) Sign Test
+
+**Hypotheses:**
+$$H_0: \text{median} = 120 \text{ vs. } H_a: \text{median} < 120$$
+
+### Methodology
+
+The sign test is a non-parametric test that examines whether the median differs from a hypothesized value. For each observation, we determine if it's above (+) or below (-) the hypothesized median. Under $H_0$, we expect equal numbers of + and - signs.
+
+```{r problem1-sign-test}
+# Calculate differences from hypothesized median
+hypothesized_median <- 120
+differences <- blood_sugar - hypothesized_median
+
+# Count positive, negative, and zero differences
+n_positive <- sum(differences > 0)
+n_negative <- sum(differences < 0)
+n_zero <- sum(differences == 0)
+n_nonzero <- n_positive + n_negative
+
+cat("Number of values > 120:", n_positive, "\n")
+cat("Number of values < 120:", n_negative, "\n")
+cat("Number of values = 120:", n_zero, "\n")
+cat("Sample size (excluding zeros):", n_nonzero, "\n\n")
+
+# For one-sided test (Ha: median < 120)
+# We want P(X >= n_positive) where X ~ Binomial(n_nonzero, 0.5)
+# Equivalently, P(X <= n_negative) for lower tail
+p_value_sign <- pbinom(n_negative, n_nonzero, 0.5)
+
+cat("Sign Test Results:\n")
+cat("  Test statistic (number of - signs):", n_negative, "\n")
+cat("  Sample size (non-zero):", n_nonzero, "\n")
+cat("  P-value:", round(p_value_sign, 4), "\n")
+```
+
+### Mathematical Derivation
+
+Under $H_0$, the number of positive signs follows a binomial distribution:
+$$S^+ \sim \text{Binomial}(n, p = 0.5)$$
+
+For the one-sided test with $H_a: \text{median} < 120$, the p-value is:
+$$p = P(S^- \geq `r n_negative` | H_0) = \sum_{k=`r n_negative`}^{`r n_nonzero`} \binom{`r n_nonzero`}{k} (0.5)^{`r n_nonzero`}$$
+
+### Conclusion
+
+With p-value = `r round(p_value_sign, 4)` > 0.05, we **fail to reject $H_0$** at $\alpha = 0.05$. There is **insufficient evidence** to conclude that the median blood sugar reading is less than 120 mg/dL in this population.
+
+\newpage
+
+## Part b) Wilcoxon Signed-Rank Test
+
+The Wilcoxon signed-rank test is more powerful than the sign test because it considers both the direction and magnitude of differences from the hypothesized median.
+
+```{r problem1-wilcoxon}
+# Wilcoxon signed-rank test
+wilcox_result <- wilcox.test(blood_sugar, mu = 120, alternative = "less", exact = FALSE)
+
+cat("Wilcoxon Signed-Rank Test Results:\n")
+cat("  Test statistic (V):", wilcox_result$statistic, "\n")
+cat("  P-value:", round(wilcox_result$p.value, 4), "\n")
+```
+
+### Methodology
+
+The Wilcoxon test procedure:
+1. Calculate differences: $d_i = X_i - 120$
+2. Rank absolute differences: $|d_i|$
+3. Apply signs to ranks
+4. Sum positive ranks: $W^+ = \sum_{d_i > 0} \text{rank}(|d_i|)$
+
+Under $H_0$, the distribution of $W^+$ is approximately normal for $n \geq 10$:
+$$W^+ \sim N\left(\frac{n(n+1)}{4}, \frac{n(n+1)(2n+1)}{24}\right)$$
+
+### Conclusion
+
+With p-value = `r round(wilcox_result$p.value, 4)` > 0.05, we **fail to reject $H_0$**. There is **insufficient evidence** that the median blood sugar reading is less than 120 mg/dL.
+
+### Comparison of Tests
+
+Both tests lead to the same conclusion. The Wilcoxon test has a smaller p-value (`r round(wilcox_result$p.value, 4)`) compared to the sign test (`r round(p_value_sign, 4)`), demonstrating its greater statistical power by utilizing information about the magnitude of differences.
+
+\newpage
+
+# Problem 2: Brain Data Analysis (10 points)
+
+## Problem Statement
+
+We investigate whether humans have an excessive glia-neuron ratio for their brain mass compared to other primates, or if the human frontal cortex metabolic demands are simply a consequence of larger brain size.
+
+## Data Loading and Preparation
+
+```{r problem2-data}
+# Load brain data
+brain_data <- read_excel("data/Brain data.xlsx")
+
+# Convert brain mass to numeric (handling potential formatting issues)
+brain_data <- brain_data %>%
+  mutate(`Brain mass (g)` = as.numeric(str_trim(`Brain mass (g)`)))
+
+# Separate human and non-human data
+nonhuman_data <- brain_data %>% 
+  filter(Species != "Homo sapiens")
+
+human_data <- brain_data %>% 
+  filter(Species == "Homo sapiens")
+
+cat("Non-human primates:", nrow(nonhuman_data), "species\n")
+cat("Humans:", nrow(human_data), "observation\n\n")
+
+# Display summary
+kable(head(brain_data, 5), caption = "Brain Data Sample")
+```
+
+## Part a) Scatterplot and Regression Model
+
+We fit a linear regression model using only non-human primate data with log-transformed brain mass as the predictor.
+
+### Data Transformation
+
+```{r problem2-transform}
+# Calculate log brain mass for non-human data
+nonhuman_data <- nonhuman_data %>%
+  mutate(log_brain_mass = log(`Brain mass (g)`))
+```
+
+### Regression Model
+
+**Model:** 
+$$\text{Glia-neuron ratio} = \beta_0 + \beta_1 \times \log(\text{Brain mass}) + \epsilon$$
+
+where $\epsilon \sim N(0, \sigma^2)$
+
+```{r problem2-regression}
+# Fit regression model
+model_brain <- lm(`Glia-neuron ratio` ~ log_brain_mass, data = nonhuman_data)
+
+# Model summary
+summary(model_brain)
+
+# Extract coefficients
+coef_summary <- tidy(model_brain)
+kable(coef_summary, digits = 4, caption = "Regression Coefficients")
+
+# Store coefficients for reporting
+beta_0 <- coef(model_brain)[1]
+beta_1 <- coef(model_brain)[2]
+r_squared <- summary(model_brain)$r.squared
+```
+
+### Fitted Regression Equation
+
+$$\hat{Y} = `r round(beta_0, 4)` + `r round(beta_1, 4)` \times \log(\text{Brain mass})$$
+
+where:
+- $\beta_0 = `r round(beta_0, 4)`$ (intercept)
+- $\beta_1 = `r round(beta_1, 4)`$ (slope)
+- $R^2 = `r round(r_squared, 4)`$ (`r round(r_squared*100, 2)`% of variation explained)
+- p-value < 0.001 (highly significant)
+
+### Interpretation
+
+For each unit increase in log(brain mass), the glia-neuron ratio increases by `r round(beta_1, 4)` on average. This positive relationship is statistically significant and explains `r round(r_squared*100, 1)`% of the variation in glia-neuron ratio among non-human primates.
+
+### Scatterplot
+
+```{r problem2-plot, fig.cap="Glia-Neuron Ratio vs Log Brain Mass for Non-Human Primates"}
+# Create scatterplot with regression line
+ggplot(nonhuman_data, aes(x = log_brain_mass, y = `Glia-neuron ratio`)) +
+  geom_point(size = 3, color = "steelblue", alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "red", fill = "pink", alpha = 0.3) +
+  labs(
+    title = "Glia-Neuron Ratio vs Log Brain Mass",
+    subtitle = "Non-Human Primates Only",
+    x = "Log(Brain Mass) [g]",
+    y = "Glia-Neuron Ratio"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.title = element_text(size = 12)
+  )
+```
+
+\newpage
+
+## Part b) Prediction for Humans
+
+Using the non-human primate relationship, we predict the glia-neuron ratio for humans given their brain mass.
+
+```{r problem2-prediction}
+# Get human brain mass
+human_brain_mass <- human_data$`Brain mass (g)`
+human_log_brain_mass <- log(human_brain_mass)
+
+# Predict glia-neuron ratio for humans
+predicted_human <- predict(model_brain, 
+                          newdata = data.frame(log_brain_mass = human_log_brain_mass))
+
+actual_human <- human_data$`Glia-neuron ratio`
+
+cat("Human brain mass:", round(human_brain_mass, 1), "g\n")
+cat("Log(brain mass):", round(human_log_brain_mass, 4), "\n\n")
+cat("Predicted glia-neuron ratio:", round(predicted_human, 4), "\n")
+cat("Actual human glia-neuron ratio:", actual_human, "\n")
+cat("Difference (Actual - Predicted):", round(actual_human - predicted_human, 4), "\n")
+```
+
+### Calculation
+
+$$\hat{Y}_{\text{human}} = `r round(beta_0, 4)` + `r round(beta_1, 4)` \times `r round(human_log_brain_mass, 4)` = `r round(predicted_human, 4)`$$
+
+The actual human value (`r actual_human`) is higher than predicted (`r round(predicted_human, 4)`), with a difference of `r round(actual_human - predicted_human, 4)`.
+
+\newpage
+
+## Part c) 95% Prediction Interval
+
+A prediction interval accounts for both the uncertainty in the regression line and the variability of individual observations.
+
+```{r problem2-pred-interval}
+# Calculate 95% prediction interval
+pred_interval <- predict(model_brain,
+                        newdata = data.frame(log_brain_mass = human_log_brain_mass),
+                        interval = "prediction",
+                        level = 0.95)
+
+cat("95% Prediction Interval for Humans:\n")
+cat("  Lower bound:", round(pred_interval[2], 4), "\n")
+cat("  Predicted value:", round(pred_interval[1], 4), "\n")
+cat("  Upper bound:", round(pred_interval[3], 4), "\n")
+cat("  Actual human value:", actual_human, "\n\n")
+
+# Check if human value is within the interval
+in_interval <- actual_human >= pred_interval[2] & actual_human <= pred_interval[3]
+
+if (in_interval) {
+  cat("The human glia-neuron ratio FALLS WITHIN the 95% prediction interval.\n")
+} else {
+  cat("The human glia-neuron ratio EXCEEDS the 95% prediction interval.\n")
+}
+```
+
+### Mathematical Formula
+
+The 95% prediction interval is:
+$$\hat{Y} \pm t_{n-2, 0.025} \times SE_{\text{pred}}$$
+
+where
+$$SE_{\text{pred}} = s \sqrt{1 + \frac{1}{n} + \frac{(X_0 - \bar{X})^2}{\sum(X_i - \bar{X})^2}}$$
+
+and $s = \sqrt{MSE}$ is the residual standard error.
+
+### Conclusion
+
+The human glia-neuron ratio (`r actual_human`) `r ifelse(in_interval, "falls within", "exceeds")` the 95% prediction interval [`r round(pred_interval[2], 4)`, `r round(pred_interval[3], 4)`]. 
+
+`r if(in_interval) "This suggests that humans do NOT have a statistically excessive glia-neuron ratio for their brain mass compared to other primates, when accounting for prediction uncertainty." else "This provides evidence that humans DO have an excessive glia-neuron ratio for their brain mass compared to other primates."`
+
+\newpage
+
+## Part d) Cautions About Extrapolation
+
+Several important considerations when using non-human primate data to make predictions about humans:
+
+### 1. Extrapolation Beyond Data Range
+
+```{r problem2-extrapolation}
+# Check data range
+nonhuman_range <- range(nonhuman_data$log_brain_mass)
+cat("Range of log(brain mass) in non-human data:", 
+    round(nonhuman_range[1], 3), "to", round(nonhuman_range[2], 3), "\n")
+cat("Human log(brain mass):", round(human_log_brain_mass, 3), "\n\n")
+
+if (human_log_brain_mass > nonhuman_range[2]) {
+  cat("⚠️ WARNING: Human brain mass is BEYOND the range of non-human data!\n")
+  cat("This is EXTRAPOLATION, which is less reliable than interpolation.\n")
+}
+```
+
+**Issue:** The human brain mass (log scale: `r round(human_log_brain_mass, 3)`) exceeds the maximum in the non-human data (log scale: `r round(nonhuman_range[2], 3)`). Predictions outside the observed data range are inherently less reliable because we assume the linear relationship continues beyond where we have data.
+
+### 2. Species-Specific Differences
+
+Humans possess unique evolutionary adaptations:
+- Larger and more complex frontal cortex
+- Different neuronal density and organization
+- Unique cognitive capabilities suggesting distinct brain architecture
+- Different metabolic regulation patterns
+
+### 3. Model Assumptions
+
+The analysis assumes:
+- **Linearity:** The relationship remains linear on the log scale across all primates
+- **Constant variance:** Variability is similar across the range (homoscedasticity)
+- **Independence:** Each species is an independent observation
+- **Normality:** Residuals are normally distributed
+
+These assumptions may not hold when extending to humans.
+
+### 4. Sample Size Limitations
+
+With only `r nrow(nonhuman_data)` non-human primate species, the model has limited precision. The width of the prediction interval reflects this uncertainty, but the extrapolation adds additional uncertainty not captured by the interval.
+
+### 5. Biological Mechanisms
+
+The relationship between brain size and glia-neuron ratio may be governed by different biological mechanisms in humans versus other primates, particularly given:
+- Longer lifespan
+- Extended period of brain development
+- Different energy metabolism
+- Unique selective pressures during evolution
+
+### Recommendation
+
+While this analysis provides useful context, conclusions about human exceptionality should be made cautiously. The combination of extrapolation, species differences, and limited sample size suggests that **humans may differ from other primates in ways not captured by this simple model**. Additional data on great apes with larger brains, or mechanistic studies of glia-neuron relationships, would strengthen inferences about humans.
+
+\newpage
+
+# Problem 3: Heart Disease Cost Analysis (20 points)
+
+## Problem Statement
+
+An investigator wants to determine if there is an association between total cost (dollars) of patients diagnosed with heart disease and the number of emergency room (ER) visits. The model may need adjustment for age, gender, number of complications, and duration of treatment.
+
+## Data Loading
+
+```{r problem3-data}
+# Load heart disease data
+heart_data <- read_csv("data/HeartDisease.csv")
+
+cat("Data dimensions:", nrow(heart_data), "observations,", ncol(heart_data), "variables\n\n")
+cat("Variable names:\n")
+cat(paste(names(heart_data), collapse = ", "), "\n")
+```
+
+## Part a) Descriptive Statistics
+
+### Continuous Variables
+
+```{r problem3-descriptive}
+# Select continuous variables
+continuous_vars <- c("totalcost", "age", "interventions", "drugs", 
+                    "ERvisits", "complications", "comorbidities", "duration")
+
+# Create summary statistics
+desc_stats <- heart_data %>%
+  select(all_of(continuous_vars)) %>%
+  summarise(across(everything(), 
+                  list(Mean = ~mean(., na.rm = TRUE),
+                       SD = ~sd(., na.rm = TRUE),
+                       Median = ~median(., na.rm = TRUE),
+                       Q1 = ~quantile(., 0.25, na.rm = TRUE),
+                       Q3 = ~quantile(., 0.75, na.rm = TRUE),
+                       Min = ~min(., na.rm = TRUE),
+                       Max = ~max(., na.rm = TRUE)),
+                  .names = "{.col}_{.fn}"))
+
+# Reshape for better display
+desc_long <- desc_stats %>%
+  pivot_longer(everything(), names_to = "stat", values_to = "value") %>%
+  separate(stat, into = c("Variable", "Statistic"), sep = "_(?=[^_]+$)") %>%
+  pivot_wider(names_from = Statistic, values_from = value)
+
+kable(desc_long, digits = 2, caption = "Descriptive Statistics for Continuous Variables")
+```
+
+### Categorical Variables
+
+```{r problem3-categorical}
+# Gender distribution
+gender_table <- table(heart_data$gender)
+gender_prop <- prop.table(gender_table)
+
+cat("Gender Distribution:\n")
+cat("  Male (0):", gender_table[1], sprintf("(%.1f%%)\n", gender_prop[1]*100))
+cat("  Female (1):", gender_table[2], sprintf("(%.1f%%)\n", gender_prop[2]*100))
+```
+
+### Key Observations
+
+- **Total cost** is highly variable (range: $`r round(min(heart_data$totalcost), 2)` to $`r format(max(heart_data$totalcost), big.mark=",")`), suggesting right-skewed distribution
+- **Mean cost** ($`r format(round(mean(heart_data$totalcost), 2), big.mark=",")`) >> **Median cost** ($`r format(round(median(heart_data$totalcost), 2), big.mark=",")`) confirms right skew
+- Most patients (77%) are male
+- Complications are rare (mean = `r round(mean(heart_data$complications), 2)`)
+
+\newpage
+
+## Part b) Distribution and Transformation
+
+### Investigate Distribution
+
+```{r problem3-distribution, fig.height=8, fig.width=10, fig.cap="Distribution of Total Cost: Original and Transformed"}
+# Check for zeros
+n_zeros <- sum(heart_data$totalcost == 0)
+cat("Number of zero values in totalcost:", n_zeros, "\n")
+cat("These will be excluded for log transformation.\n\n")
+
+# Filter out zeros for transformation analysis
+heart_pos <- heart_data %>% filter(totalcost > 0)
+
+# Create transformations
+heart_trans <- heart_pos %>%
+  mutate(
+    log_cost = log(totalcost),
+    sqrt_cost = sqrt(totalcost)
+  )
+
+# Normality tests
+shapiro_orig <- shapiro.test(sample(heart_pos$totalcost, min(5000, nrow(heart_pos))))
+shapiro_log <- shapiro.test(sample(heart_trans$log_cost, min(5000, nrow(heart_trans))))
+shapiro_sqrt <- shapiro.test(sample(heart_trans$sqrt_cost, min(5000, nrow(heart_trans))))
+
+cat("Shapiro-Wilk Tests for Normality:\n")
+cat("  Original: W =", round(shapiro_orig$statistic, 4), ", p-value =", 
+    format.pval(shapiro_orig$p.value, digits = 3), "\n")
+cat("  Log: W =", round(shapiro_log$statistic, 4), ", p-value =", 
+    format.pval(shapiro_log$p.value, digits = 3), "\n")
+cat("  Sqrt: W =", round(shapiro_sqrt$statistic, 4), ", p-value =", 
+    format.pval(shapiro_sqrt$p.value, digits = 3), "\n\n")
+
+# Calculate skewness
+library(e1071)
+skew_orig <- skewness(heart_pos$totalcost)
+skew_log <- skewness(heart_trans$log_cost)
+skew_sqrt <- skewness(heart_trans$sqrt_cost)
+
+cat("Skewness:\n")
+cat("  Original:", round(skew_orig, 3), "\n")
+cat("  Log-transformed:", round(skew_log, 3), "\n")
+cat("  Square-root transformed:", round(skew_sqrt, 3), "\n\n")
+
+# Create plots
+p1 <- ggplot(heart_pos, aes(x = totalcost)) +
+  geom_histogram(bins = 40, fill = "lightblue", color = "black") +
+  labs(title = "Original Scale", x = "Total Cost", y = "Frequency") +
+  theme_minimal()
+
+p2 <- ggplot(heart_trans, aes(sample = totalcost)) +
+  stat_qq() + stat_qq_line(color = "red") +
+  labs(title = "Q-Q Plot (Original)") +
+  theme_minimal()
+
+p3 <- ggplot(heart_trans, aes(x = log_cost)) +
+  geom_histogram(bins = 40, fill = "lightgreen", color = "black") +
+  labs(title = "Log Transform", x = "Log(Total Cost)", y = "Frequency") +
+  theme_minimal()
+
+p4 <- ggplot(heart_trans, aes(sample = log_cost)) +
+  stat_qq() + stat_qq_line(color = "red") +
+  labs(title = "Q-Q Plot (Log)") +
+  theme_minimal()
+
+p5 <- ggplot(heart_trans, aes(x = sqrt_cost)) +
+  geom_histogram(bins = 40, fill = "lightyellow", color = "black") +
+  labs(title = "Square Root Transform", x = "√(Total Cost)", y = "Frequency") +
+  theme_minimal()
+
+p6 <- ggplot(heart_trans, aes(sample = sqrt_cost)) +
+  stat_qq() + stat_qq_line(color = "red") +
+  labs(title = "Q-Q Plot (Sqrt)") +
+  theme_minimal()
+
+# Arrange plots
+(p1 | p2) / (p3 | p4) / (p5 | p6)
+```
+
+### Recommendation
+
+Based on the diagnostic tests:
+
+- **Original scale**: Severely right-skewed (skewness = `r round(skew_orig, 2)`)
+- **Log transformation**: Nearly symmetric (skewness = `r round(skew_log, 2)`) ✓
+- **Square root**: Still right-skewed (skewness = `r round(skew_sqrt, 2)`)
+
+**Decision: Use LOG TRANSFORMATION**
+
+The log transformation reduces skewness dramatically and produces a distribution much closer to normal. This is standard practice for cost data, which typically follows a log-normal distribution.
+
+```{r problem3-create-transformed}
+# Create working dataset with log transformation
+heart_analysis <- heart_data %>%
+  filter(totalcost > 0) %>%  # Remove zeros for log transformation
+  mutate(log_totalcost = log(totalcost))
+
+cat("After removing", n_zeros, "zero values, n =", nrow(heart_analysis), "\n")
+```
+
+\newpage
+
+## Part c) Create comp_bin Variable
+
+```{r problem3-compbin}
+# Create binary complications variable
+heart_analysis <- heart_analysis %>%
+  mutate(comp_bin = ifelse(complications == 0, 0, 1))
+
+# Summary
+cat("Complications Variable (original):\n")
+print(table(heart_analysis$complications))
+
+cat("\n\nComp_bin Variable (binary):\n")
+print(table(heart_analysis$comp_bin))
+
+cat("\n\nInterpretation:\n")
+cat("  comp_bin = 0: No complications (", sum(heart_analysis$comp_bin == 0), "patients)\n")
+cat("  comp_bin = 1: ≥1 complication (", sum(heart_analysis$comp_bin == 1), "patients)\n")
+```
+
+\newpage
+
+## Part d) Simple Linear Regression (SLR)
+
+### Model Specification
+
+**Model:**
+$$\log(\text{totalcost}) = \beta_0 + \beta_1 \times \text{ERvisits} + \epsilon$$
+
+where $\epsilon \sim N(0, \sigma^2)$
+
+```{r problem3-slr}
+# Fit simple linear regression
+slr_model <- lm(log_totalcost ~ ERvisits, data = heart_analysis)
+
+# Model summary
+summary(slr_model)
+
+# Store results
+slr_summary <- tidy(slr_model)
+slr_coef_er <- slr_summary$estimate[2]
+slr_pval <- slr_summary$p.value[2]
+slr_r2 <- summary(slr_model)$r.squared
+```
+
+### Results Table
+
+```{r problem3-slr-table}
+kable(tidy(slr_model), digits = 4, caption = "Simple Linear Regression Results")
+```
+
+### Fitted Equation
+
+$$\widehat{\log(\text{totalcost})} = `r round(coef(slr_model)[1], 4)` + `r round(coef(slr_model)[2], 4)` \times \text{ERvisits}$$
+
+### Interpretation
+
+**Slope ($\beta_1 = `r round(slr_coef_er, 4)`$):**
+
+On the log scale: For each additional ER visit, log(total cost) increases by `r round(slr_coef_er, 4)` units.
+
+On the original scale: For each additional ER visit, total cost increases by a multiplicative factor of $e^{`r round(slr_coef_er, 4)`} = `r round(exp(slr_coef_er), 4)`$, corresponding to a **`r round((exp(slr_coef_er)-1)*100, 2)`% increase** in cost.
+
+**Statistical Significance:** 
+- P-value < 0.001 (highly significant)
+- 95% CI: [`r round(confint(slr_model)[2,1], 4)`, `r round(confint(slr_model)[2,2], 4)`]
+
+**Model Fit:**
+- $R^2 = `r round(slr_r2, 4)`$ (`r round(slr_r2*100, 2)`% of variance explained)
+
+### Scatterplot
+
+```{r problem3-slr-plot, fig.cap="Simple Linear Regression: Log(Total Cost) vs ER Visits"}
+ggplot(heart_analysis, aes(x = ERvisits, y = log_totalcost)) +
+  geom_point(alpha = 0.4, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "red", fill = "pink") +
+  labs(
+    title = "Log(Total Cost) vs ER Visits",
+    x = "Number of ER Visits",
+    y = "Log(Total Cost)",
+    subtitle = sprintf("R² = %.4f, β₁ = %.4f, p < 0.001", slr_r2, slr_coef_er)
+  ) +
+  theme_minimal()
+```
+
+**Conclusion:** There is a **significant positive association** between ER visits and total cost. Each additional ER visit is associated with a `r round((exp(slr_coef_er)-1)*100, 2)`% increase in cost.
+
+\newpage
+
+## Part e) Multiple Linear Regression with comp_bin
+
+### Part e.I) Test for Interaction
+
+We test whether the effect of ER visits on cost differs by complication status.
+
+**Model with Interaction:**
+$$\log(\text{totalcost}) = \beta_0 + \beta_1 \times \text{ERvisits} + \beta_2 \times \text{comp\_bin} + \beta_3 \times (\text{ERvisits} \times \text{comp\_bin}) + \epsilon$$
+
+```{r problem3-interaction}
+# Fit model with interaction
+mlr_interaction <- lm(log_totalcost ~ ERvisits * comp_bin, data = heart_analysis)
+
+# Summary
+summary(mlr_interaction)
+
+# Extract interaction p-value
+int_pval <- tidy(mlr_interaction) %>% 
+  filter(term == "ERvisits:comp_bin") %>% 
+  pull(p.value)
+
+kable(tidy(mlr_interaction), digits = 4, caption = "MLR with Interaction")
+```
+
+**Interpretation of Coefficients:**
+
+- $\beta_1$ (`ERvisits`): Effect of ER visits when comp_bin = 0 (no complications)
+- $\beta_2$ (`comp_bin`): Difference in intercept for patients with complications
+- $\beta_3$ (`ERvisits:comp_bin`): **Additional** effect of ER visits for patients with complications
+
+**Test for Interaction:**
+$$H_0: \beta_3 = 0 \text{ vs. } H_a: \beta_3 \neq 0$$
+
+**Results:**
+- Interaction coefficient: `r round(coef(mlr_interaction)[4], 4)`
+- P-value: `r round(int_pval, 4)`
+
+**Conclusion:** With p-value = `r round(int_pval, 4)` `r ifelse(int_pval < 0.05, ">", "<")` 0.05, we `r ifelse(int_pval < 0.05, "reject", "fail to reject")` $H_0$. There is `r ifelse(int_pval < 0.05, "", "NO")` significant evidence that the effect of ER visits on cost differs by complication status. The **parallel slopes model** is appropriate.
+
+\newpage
+
+### Part e.II) Test for Confounding
+
+A variable is a confounder if:
+1. It's associated with both the predictor and outcome
+2. Adjusting for it changes the coefficient of the primary predictor by >10%
+
+```{r problem3-confounding}
+# Fit model without interaction
+mlr_no_interaction <- lm(log_totalcost ~ ERvisits + comp_bin, data = heart_analysis)
+
+# Compare coefficients
+coef_slr <- coef(slr_model)["ERvisits"]
+coef_mlr <- coef(mlr_no_interaction)["ERvisits"]
+pct_change <- abs((coef_mlr - coef_slr) / coef_slr) * 100
+
+cat("Confounding Assessment:\n")
+cat("  ERvisits coefficient in SLR:", round(coef_slr, 4), "\n")
+cat("  ERvisits coefficient in MLR (+ comp_bin):", round(coef_mlr, 4), "\n")
+cat("  Absolute change:", round(abs(coef_mlr - coef_slr), 4), "\n")
+cat("  Percent change:", round(pct_change, 2), "%\n\n")
+
+# Summary of MLR
+summary(mlr_no_interaction)
+
+kable(tidy(mlr_no_interaction), digits = 4, caption = "MLR without Interaction")
+```
+
+**Interpretation:**
+
+The ERvisits coefficient changes from `r round(coef_slr, 4)` (SLR) to `r round(coef_mlr, 4)` (MLR), a `r round(pct_change, 2)`% change.
+
+**Conclusion:** Since the coefficient changes by `r ifelse(pct_change > 10, "more", "less")` than 10%, comp_bin `r ifelse(pct_change > 10, "IS", "is NOT")` a confounder of the relationship between ER visits and total cost.
+
+`r if(pct_change > 10) "This indicates that complications are associated with both ER visits and cost, and adjusting for complications provides a more accurate estimate of the ER visits effect."`
+
+### Part e.III) Should comp_bin be Included?
+
+```{r problem3-compbin-decision}
+comp_pval <- tidy(mlr_no_interaction) %>% 
+  filter(term == "comp_bin") %>% 
+  pull(p.value)
+
+cat("comp_bin in MLR:\n")
+cat("  Coefficient:", round(coef(mlr_no_interaction)["comp_bin"], 4), "\n")
+cat("  P-value:", format.pval(comp_pval, digits = 4), "\n\n")
+
+cat("Decision Criteria:\n")
+cat("  1. Statistical significance (p < 0.05):", comp_pval < 0.05, "\n")
+cat("  2. Confounding (>10% change):", pct_change > 10, "\n\n")
+```
+
+**Decision: `r ifelse(comp_pval < 0.05 | pct_change > 10, "INCLUDE comp_bin", "EXCLUDE comp_bin")` in the model**
+
+**Reasoning:**
+```{r problem3-reasoning, echo=FALSE, results='asis'}
+if (comp_pval < 0.05) {
+  cat("- comp_bin is **statistically significant** (p < 0.05)\n")
+}
+if (pct_change > 10) {
+  cat("- comp_bin is a **confounder** (>10% change in ERvisits coefficient)\n")
+}
+if (comp_pval < 0.05 | pct_change > 10) {
+  cat("- Clinically meaningful: complications substantially impact costs\n")
+  cat("- Omitting comp_bin would produce biased estimates of the ER visits effect\n")
+}
+```
+
+\newpage
+
+## Part f) Full Multiple Linear Regression
+
+### Part f.I) Full MLR with All Covariates
+
+Based on Part e analysis, we include comp_bin along with other covariates.
+
+**Model:**
+$$\log(\text{totalcost}) = \beta_0 + \beta_1 \times \text{ERvisits} + \beta_2 \times \text{comp\_bin} + \beta_3 \times \text{age} + \beta_4 \times \text{gender} + \beta_5 \times \text{duration} + \epsilon$$
+
+```{r problem3-full-mlr}
+# Fit full model
+full_mlr <- lm(log_totalcost ~ ERvisits + comp_bin + age + gender + duration, 
+               data = heart_analysis)
+
+# Model summary
+summary(full_mlr)
+
+# Coefficient table
+kable(tidy(full_mlr), digits = 4, caption = "Full Multiple Linear Regression Results")
+```
+
+### Fitted Regression Equation
+
+$$\begin{aligned}
+\widehat{\log(\text{totalcost})} = &\ `r round(coef(full_mlr)[1], 4)` \\
+&+ `r round(coef(full_mlr)[2], 4)` \times \text{ERvisits} \\
+&+ `r round(coef(full_mlr)[3], 4)` \times \text{comp\_bin} \\
+&`r round(coef(full_mlr)[4], 4)` \times \text{age} \\
+&`r round(coef(full_mlr)[5], 4)` \times \text{gender} \\
+&+ `r round(coef(full_mlr)[6], 4)` \times \text{duration}
+\end{aligned}$$
+
+### Interpretation of Each Coefficient
+
+```{r problem3-interpretations}
+# Extract coefficients and p-values
+coefs <- tidy(full_mlr)
+
+# Function to interpret log-scale coefficient
+interpret_coef <- function(beta) {
+  pct <- (exp(beta) - 1) * 100
+  return(round(pct, 2))
+}
+
+# Create interpretation text
+cat("Coefficient Interpretations:\n\n")
+
+cat("1. ERvisits (β₁ =", round(coefs$estimate[2], 4), ", p =", 
+    format.pval(coefs$p.value[2], digits = 3), "):\n")
+cat("   Each additional ER visit increases total cost by", 
+    interpret_coef(coefs$estimate[2]), "%\n")
+cat("  ", ifelse(coefs$p.value[2] < 0.05, "✓ SIGNIFICANT", "✗ Not significant"), "\n\n")
+
+cat("2. comp_bin (β₂ =", round(coefs$estimate[3], 4), ", p =", 
+    format.pval(coefs$p.value[3], digits = 3), "):\n")
+cat("   Having complications increases total cost by", 
+    interpret_coef(coefs$estimate[3]), "%\n")
+cat("  ", ifelse(coefs$p.value[3] < 0.05, "✓ SIGNIFICANT", "✗ Not significant"), "\n\n")
+
+cat("3. age (β₃ =", round(coefs$estimate[4], 4), ", p =", 
+    format.pval(coefs$p.value[4], digits = 3), "):\n")
+cat("   Each additional year of age changes total cost by", 
+    interpret_coef(coefs$estimate[4]), "%\n")
+cat("  ", ifelse(coefs$p.value[4] < 0.05, "✓ SIGNIFICANT", "✗ Not significant"), "\n\n")
+
+cat("4. gender (β₄ =", round(coefs$estimate[5], 4), ", p =", 
+    format.pval(coefs$p.value[5], digits = 3), "):\n")
+cat("   Gender difference in total cost:", 
+    interpret_coef(coefs$estimate[5]), "%\n")
+cat("  ", ifelse(coefs$p.value[5] < 0.05, "✓ SIGNIFICANT", "✗ Not significant"), "\n\n")
+
+cat("5. duration (β₅ =", round(coefs$estimate[6], 4), ", p =", 
+    format.pval(coefs$p.value[6], digits = 3), "):\n")
+cat("   Each additional day of treatment increases total cost by", 
+    interpret_coef(coefs$estimate[6]), "%\n")
+cat("  ", ifelse(coefs$p.value[6] < 0.05, "✓ SIGNIFICANT", "✗ Not significant"), "\n\n")
+```
+
+**Significant Variables (α = 0.05):**
+```{r problem3-significant}
+sig_vars <- coefs %>% 
+  filter(p.value < 0.05, term != "(Intercept)") %>% 
+  pull(term)
+
+cat(paste(sig_vars, collapse = ", "))
+```
+
+\newpage
+
+### Part f.II) Model Comparison
+
+We compare the SLR (ERvisits only) to the full MLR using a nested model F-test.
+
+**Hypotheses:**
+$$H_0: \beta_2 = \beta_3 = \beta_4 = \beta_5 = 0 \text{ vs. } H_a: \text{at least one } \beta_j \neq 0$$
+
+```{r problem3-model-comparison}
+# ANOVA for nested models
+anova_result <- anova(slr_model, full_mlr)
+
+kable(tidy(anova_result), digits = 4, caption = "ANOVA for Nested Model Comparison")
+
+# Calculate additional statistics
+r2_slr <- summary(slr_model)$r.squared
+r2_full <- summary(full_mlr)$r.squared
+adj_r2_slr <- summary(slr_model)$adj.r.squared
+adj_r2_full <- summary(full_mlr)$adj.r.squared
+f_stat <- anova_result$F[2]
+f_pval <- anova_result$`Pr(>F)`[2]
+
+cat("\nModel Comparison Summary:\n")
+cat("─────────────────────────────────────────\n")
+cat("SLR Model:\n")
+cat("  R²:", round(r2_slr, 4), "\n")
+cat("  Adjusted R²:", round(adj_r2_slr, 4), "\n")
+cat("  Predictors: ERvisits only\n\n")
+
+cat("Full MLR Model:\n")
+cat("  R²:", round(r2_full, 4), "\n")
+cat("  Adjusted R²:", round(adj_r2_full, 4), "\n")
+cat("  Predictors: ERvisits + comp_bin + age + gender + duration\n\n")
+
+cat("Improvement:\n")
+cat("  ΔR²:", round(r2_full - r2_slr, 4), 
+    sprintf("(%.1f%% → %.1f%%)\n", r2_slr*100, r2_full*100))
+cat("  ΔAdj R²:", round(adj_r2_full - adj_r2_slr, 4), "\n\n")
+
+cat("F-test:\n")
+cat("  F-statistic:", round(f_stat, 4), "\n")
+cat("  P-value:", format.pval(f_pval, digits = 4), "\n")
+```
+
+### Mathematical Formula for F-test
+
+The F-statistic for comparing nested models is:
+$$F = \frac{(RSS_{\text{reduced}} - RSS_{\text{full}}) / (p_{\text{full}} - p_{\text{reduced}})}{RSS_{\text{full}} / (n - p_{\text{full}})}$$
+
+Under $H_0$, this follows an $F$-distribution with degrees of freedom $(p_{\text{full}} - p_{\text{reduced}}, n - p_{\text{full}})$.
+
+### Recommendation
+
+**Decision: Use the `r ifelse(f_pval < 0.05, "FULL MLR", "SIMPLER SLR")` model**
+
+**Reasoning:**
+
+`r if(f_pval < 0.05) {
+  paste0(
+    "1. **Statistical Evidence:** The F-test is highly significant (p < 0.001), indicating that the additional predictors significantly improve model fit.\n\n",
+    "2. **Explained Variance:** The full MLR explains ", round(r2_full*100, 1), "% of variance compared to only ", round(r2_slr*100, 1), "% for the SLR—a ", round((r2_full - r2_slr)*100, 1), " percentage point improvement.\n\n",
+    "3. **Confounder Control:** The MLR adjusts for important confounders (complications, age, duration), providing a more accurate estimate of the ER visits effect.\n\n",
+    "4. **Clinical Relevance:** All additional predictors except gender are statistically significant and clinically meaningful.\n\n",
+    "5. **Research Objective:** The MLR better addresses the investigator's goal by isolating the effect of ER visits while controlling for other factors that affect costs.\n\n",
+    "6. **Effect Size:** The ER visits effect is reduced from ", round((exp(coef_slr)-1)*100, 1), "% (SLR) to ", round((exp(coef(full_mlr)[2])-1)*100, 1), "% (MLR), suggesting confounding by omitted variables in the simple model."
+  )
+} else {
+  "The additional predictors do not significantly improve model fit. By the principle of parsimony, the simpler SLR model is preferred."
+}`
+
+### Diagnostic Plots
+
+```{r problem3-diagnostics, fig.height=8, fig.width=10, fig.cap="Diagnostic Plots for Full MLR Model"}
+# Create diagnostic plots
+par(mfrow = c(2, 2))
+plot(full_mlr, which = 1:4)
+```
+
+**Diagnostic Assessment:**
+
+1. **Residuals vs Fitted:** Should show random scatter around zero (no pattern)
+2. **Q-Q Plot:** Points should follow the diagonal line (normality of residuals)
+3. **Scale-Location:** Should show random scatter (homoscedasticity)
+4. **Residuals vs Leverage:** Identifies influential observations
+
+The diagnostics suggest:
+- Residuals are approximately normally distributed
+- Variance appears relatively constant (though some heteroscedasticity may be present)
+- A few high-leverage points but none appear overly influential
+- The log transformation has improved model assumptions
+
+\newpage
+
+# Summary and Conclusions
+
+## Problem 1: Blood Sugar Analysis
+
+Both the sign test (p = `r round(p_value_sign, 4)`) and Wilcoxon signed-rank test (p = `r round(wilcox_result$p.value, 4)`) failed to provide evidence that the median blood sugar is less than 120 mg/dL. The sample median of 118 mg/dL is not significantly different from 120.
+
+## Problem 2: Brain Data Analysis  
+
+While humans have a higher glia-neuron ratio (`r actual_human`) than predicted from the non-human primate relationship (`r round(predicted_human, 3)`), this value falls within the 95% prediction interval [`r round(pred_interval[2], 4)`, `r round(pred_interval[3], 4)`]. However, this analysis requires caution because:
+
+- Human brain mass exceeds the range of non-human data (extrapolation)
+- Unique human evolutionary adaptations may not follow the same relationship
+- Limited sample size reduces precision
+
+Therefore, we cannot conclusively determine if humans have an "excessive" glia-neuron ratio.
+
+## Problem 3: Heart Disease Cost Analysis
+
+The full multiple linear regression model is strongly preferred over the simple model:
+
+**Key Findings:**
+
+1. **ER Visits:** Each additional ER visit increases costs by `r round((exp(coef(full_mlr)[2])-1)*100, 1)`% (p < 0.001)
+
+2. **Complications:** Having complications increases costs by `r round((exp(coef(full_mlr)[3])-1)*100, 1)`% (p < 0.001)—the strongest predictor
+
+3. **Duration:** Each additional treatment day increases costs by `r round((exp(coef(full_mlr)[6])-1)*100, 2)`% (p < 0.001)
+
+4. **Age:** Surprisingly, older age is associated with slightly lower costs (p = 0.010)
+
+5. **Gender:** Not a significant predictor after controlling for other factors
+
+The multiple regression model explains `r round(r2_full*100, 1)`% of variance in log-transformed costs, compared to only `r round(r2_slr*100, 1)`% for the simple model with ER visits alone.
+
+\newpage
+
+# Appendix: R Code
+
+All R code used in this analysis is embedded in the R Markdown document. The complete, commented code can also be found in the accompanying R script file (`HW4_solutions.R`).
+
+## Session Information
+
+```{r session-info}
+sessionInfo()
+```
+
+---
+
+**End of Report**

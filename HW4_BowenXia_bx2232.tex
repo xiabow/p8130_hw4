@@ -1,0 +1,2522 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P8130 Biostatistics Homework 4},
+  pdfauthor={Bowen Xia (UNI: bx2232)},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P8130 Biostatistics Homework 4}
+\author{Bowen Xia (UNI: bx2232)}
+\date{November 25, 2025}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\newpage
+
+\section{Problem 1: Blood Sugar Analysis (10
+points)}\label{problem-1-blood-sugar-analysis-10-points}
+
+\subsection{Problem Statement}\label{problem-statement}
+
+A new blood sugar monitoring device is being evaluated. We have data
+from 25 patients with similar blood sugar distributions. We need to test
+whether there is significant evidence (\(\alpha = 0.05\)) that the
+median blood sugar reading is less than 120 in the population.
+
+\subsection{Data}\label{data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Blood sugar data}
+\NormalTok{blood\_sugar }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{125}\NormalTok{, }\DecValTok{123}\NormalTok{, }\DecValTok{117}\NormalTok{, }\DecValTok{123}\NormalTok{, }\DecValTok{115}\NormalTok{, }\DecValTok{112}\NormalTok{, }\DecValTok{128}\NormalTok{, }\DecValTok{118}\NormalTok{, }\DecValTok{124}\NormalTok{, }\DecValTok{111}\NormalTok{, }\DecValTok{116}\NormalTok{, }\DecValTok{109}\NormalTok{, }\DecValTok{125}\NormalTok{,}
+                 \DecValTok{120}\NormalTok{, }\DecValTok{113}\NormalTok{, }\DecValTok{123}\NormalTok{, }\DecValTok{112}\NormalTok{, }\DecValTok{118}\NormalTok{, }\DecValTok{121}\NormalTok{, }\DecValTok{118}\NormalTok{, }\DecValTok{122}\NormalTok{, }\DecValTok{115}\NormalTok{, }\DecValTok{105}\NormalTok{, }\DecValTok{118}\NormalTok{, }\DecValTok{131}\NormalTok{)}
+
+\CommentTok{\# Summary statistics}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Sample size:"}\NormalTok{, }\FunctionTok{length}\NormalTok{(blood\_sugar), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Sample size: 25
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Mean:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(blood\_sugar), }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Mean: 118.48
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Median:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{median}\NormalTok{(blood\_sugar), }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Median: 118
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Standard deviation:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{sd}\NormalTok{(blood\_sugar), }\DecValTok{2}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Standard deviation: 6.19
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Range:"}\NormalTok{, }\FunctionTok{min}\NormalTok{(blood\_sugar), }\StringTok{"{-}"}\NormalTok{, }\FunctionTok{max}\NormalTok{(blood\_sugar), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Range: 105 - 131
+\end{verbatim}
+
+\subsection{Part a) Sign Test}\label{part-a-sign-test}
+
+\textbf{Hypotheses:}
+\[H_0: \text{median} = 120 \text{ vs. } H_a: \text{median} < 120\]
+
+\subsubsection{Methodology}\label{methodology}
+
+The sign test is a non-parametric test that examines whether the median
+differs from a hypothesized value. For each observation, we determine if
+it's above (+) or below (-) the hypothesized median. Under \(H_0\), we
+expect equal numbers of + and - signs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate differences from hypothesized median}
+\NormalTok{hypothesized\_median }\OtherTok{\textless{}{-}} \DecValTok{120}
+\NormalTok{differences }\OtherTok{\textless{}{-}}\NormalTok{ blood\_sugar }\SpecialCharTok{{-}}\NormalTok{ hypothesized\_median}
+
+\CommentTok{\# Count positive, negative, and zero differences}
+\NormalTok{n\_positive }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(differences }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)}
+\NormalTok{n\_negative }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(differences }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{)}
+\NormalTok{n\_zero }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(differences }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)}
+\NormalTok{n\_nonzero }\OtherTok{\textless{}{-}}\NormalTok{ n\_positive }\SpecialCharTok{+}\NormalTok{ n\_negative}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Number of values \textgreater{} 120:"}\NormalTok{, n\_positive, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Number of values > 120: 10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Number of values \textless{} 120:"}\NormalTok{, n\_negative, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Number of values < 120: 14
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Number of values = 120:"}\NormalTok{, n\_zero, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Number of values = 120: 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Sample size (excluding zeros):"}\NormalTok{, n\_nonzero, }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Sample size (excluding zeros): 24
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# For one{-}sided test (Ha: median \textless{} 120)}
+\CommentTok{\# We want P(X \textgreater{}= n\_positive) where X \textasciitilde{} Binomial(n\_nonzero, 0.5)}
+\CommentTok{\# Equivalently, P(X \textless{}= n\_negative) for lower tail}
+\NormalTok{p\_value\_sign }\OtherTok{\textless{}{-}} \FunctionTok{pbinom}\NormalTok{(n\_negative, n\_nonzero, }\FloatTok{0.5}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Sign Test Results:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Sign Test Results:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Test statistic (number of {-} signs):"}\NormalTok{, n\_negative, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Test statistic (number of - signs): 14
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Sample size (non{-}zero):"}\NormalTok{, n\_nonzero, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Sample size (non-zero): 24
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  P{-}value:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(p\_value\_sign, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   P-value: 0.8463
+\end{verbatim}
+
+\subsubsection{Mathematical Derivation}\label{mathematical-derivation}
+
+Under \(H_0\), the number of positive signs follows a binomial
+distribution: \[S^+ \sim \text{Binomial}(n, p = 0.5)\]
+
+For the one-sided test with \(H_a: \text{median} < 120\), the p-value
+is:
+\[p = P(S^- \geq 14 | H_0) = \sum_{k=14}^{24} \binom{24}{k} (0.5)^{24}\]
+
+\subsubsection{Conclusion}\label{conclusion}
+
+With p-value = 0.8463 \textgreater{} 0.05, we \textbf{fail to reject
+\(H_0\)} at \(\alpha = 0.05\). There is \textbf{insufficient evidence}
+to conclude that the median blood sugar reading is less than 120 mg/dL
+in this population.
+
+\newpage
+
+\subsection{Part b) Wilcoxon Signed-Rank
+Test}\label{part-b-wilcoxon-signed-rank-test}
+
+The Wilcoxon signed-rank test is more powerful than the sign test
+because it considers both the direction and magnitude of differences
+from the hypothesized median.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Wilcoxon signed{-}rank test}
+\NormalTok{wilcox\_result }\OtherTok{\textless{}{-}} \FunctionTok{wilcox.test}\NormalTok{(blood\_sugar, }\AttributeTok{mu =} \DecValTok{120}\NormalTok{, }\AttributeTok{alternative =} \StringTok{"less"}\NormalTok{, }\AttributeTok{exact =} \ConstantTok{FALSE}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Wilcoxon Signed{-}Rank Test Results:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Wilcoxon Signed-Rank Test Results:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Test statistic (V):"}\NormalTok{, wilcox\_result}\SpecialCharTok{$}\NormalTok{statistic, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Test statistic (V): 112.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  P{-}value:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(wilcox\_result}\SpecialCharTok{$}\NormalTok{p.value, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   P-value: 0.1447
+\end{verbatim}
+
+\subsubsection{Methodology}\label{methodology-1}
+
+The Wilcoxon test procedure: 1. Calculate differences:
+\(d_i = X_i - 120\) 2. Rank absolute differences: \(|d_i|\) 3. Apply
+signs to ranks 4. Sum positive ranks:
+\(W^+ = \sum_{d_i > 0} \text{rank}(|d_i|)\)
+
+Under \(H_0\), the distribution of \(W^+\) is approximately normal for
+\(n \geq 10\):
+\[W^+ \sim N\left(\frac{n(n+1)}{4}, \frac{n(n+1)(2n+1)}{24}\right)\]
+
+\subsubsection{Conclusion}\label{conclusion-1}
+
+With p-value = 0.1447 \textgreater{} 0.05, we \textbf{fail to reject
+\(H_0\)}. There is \textbf{insufficient evidence} that the median blood
+sugar reading is less than 120 mg/dL.
+
+\subsubsection{Comparison of Tests}\label{comparison-of-tests}
+
+Both tests lead to the same conclusion. The Wilcoxon test has a smaller
+p-value (0.1447) compared to the sign test (0.8463), demonstrating its
+greater statistical power by utilizing information about the magnitude
+of differences.
+
+\newpage
+
+\section{Problem 2: Brain Data Analysis (10
+points)}\label{problem-2-brain-data-analysis-10-points}
+
+\subsection{Problem Statement}\label{problem-statement-1}
+
+We investigate whether humans have an excessive glia-neuron ratio for
+their brain mass compared to other primates, or if the human frontal
+cortex metabolic demands are simply a consequence of larger brain size.
+
+\subsection{Data Loading and
+Preparation}\label{data-loading-and-preparation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Load brain data}
+\NormalTok{brain\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{"data/Brain data.xlsx"}\NormalTok{)}
+
+\CommentTok{\# Convert brain mass to numeric (handling potential formatting issues)}
+\NormalTok{brain\_data }\OtherTok{\textless{}{-}}\NormalTok{ brain\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Brain mass (g)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_trim}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Brain mass (g)}\StringTok{\textasciigrave{}}\NormalTok{)))}
+
+\CommentTok{\# Separate human and non{-}human data}
+\NormalTok{nonhuman\_data }\OtherTok{\textless{}{-}}\NormalTok{ brain\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Species }\SpecialCharTok{!=} \StringTok{"Homo sapiens"}\NormalTok{)}
+
+\NormalTok{human\_data }\OtherTok{\textless{}{-}}\NormalTok{ brain\_data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Species }\SpecialCharTok{==} \StringTok{"Homo sapiens"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Non{-}human primates:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(nonhuman\_data), }\StringTok{"species}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Non-human primates: 16 species
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Humans:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(human\_data), }\StringTok{"observation}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Humans: 1 observation
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Display summary}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{head}\NormalTok{(brain\_data, }\DecValTok{5}\NormalTok{), }\AttributeTok{caption =} \StringTok{"Brain Data Sample"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrr@{}}
+\caption{Brain Data Sample}\tabularnewline
+\toprule\noalign{}
+Species & Brain mass (g) & Ln Brain mass & Glia-neuron ratio \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Species & Brain mass (g) & Ln Brain mass & Glia-neuron ratio \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Homo sapiens & 1373.3 & 7.22 & 1.65 \\
+Pan troglodytes & 336.2 & 5.82 & 1.20 \\
+Gorilla gorilla & 509.2 & 6.23 & 1.21 \\
+Pongo pygmaeus & 342.7 & 5.84 & 0.98 \\
+Hylobates muelleri & 101.8 & 4.62 & 1.22 \\
+\end{longtable}
+
+\subsection{Part a) Scatterplot and Regression
+Model}\label{part-a-scatterplot-and-regression-model}
+
+We fit a linear regression model using only non-human primate data with
+log-transformed brain mass as the predictor.
+
+\subsubsection{Data Transformation}\label{data-transformation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate log brain mass for non{-}human data}
+\NormalTok{nonhuman\_data }\OtherTok{\textless{}{-}}\NormalTok{ nonhuman\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{log\_brain\_mass =} \FunctionTok{log}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Brain mass (g)}\StringTok{\textasciigrave{}}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Regression Model}\label{regression-model}
+
+\textbf{Model:}
+\[\text{Glia-neuron ratio} = \beta_0 + \beta_1 \times \log(\text{Brain mass}) + \epsilon\]
+
+where \(\epsilon \sim N(0, \sigma^2)\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Fit regression model}
+\NormalTok{model\_brain }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\StringTok{\textasciigrave{}}\AttributeTok{Glia{-}neuron ratio}\StringTok{\textasciigrave{}} \SpecialCharTok{\textasciitilde{}}\NormalTok{ log\_brain\_mass, }\AttributeTok{data =}\NormalTok{ nonhuman\_data)}
+
+\CommentTok{\# Model summary}
+\FunctionTok{summary}\NormalTok{(model\_brain)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = `Glia-neuron ratio` ~ log_brain_mass, data = nonhuman_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.23080 -0.12247 -0.03375  0.17943  0.26254 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)     0.16624    0.16493   1.008 0.330588    
+## log_brain_mass  0.17896    0.03723   4.807 0.000279 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1751 on 14 degrees of freedom
+## Multiple R-squared:  0.6227, Adjusted R-squared:  0.5957 
+## F-statistic: 23.11 on 1 and 14 DF,  p-value: 0.000279
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Extract coefficients}
+\NormalTok{coef\_summary }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(model\_brain)}
+\FunctionTok{kable}\NormalTok{(coef\_summary, }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"Regression Coefficients"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{Regression Coefficients}\tabularnewline
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 0.1662 & 0.1649 & 1.0079 & 0.3306 \\
+log\_brain\_mass & 0.1790 & 0.0372 & 4.8068 & 0.0003 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Store coefficients for reporting}
+\NormalTok{beta\_0 }\OtherTok{\textless{}{-}} \FunctionTok{coef}\NormalTok{(model\_brain)[}\DecValTok{1}\NormalTok{]}
+\NormalTok{beta\_1 }\OtherTok{\textless{}{-}} \FunctionTok{coef}\NormalTok{(model\_brain)[}\DecValTok{2}\NormalTok{]}
+\NormalTok{r\_squared }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(model\_brain)}\SpecialCharTok{$}\NormalTok{r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Fitted Regression
+Equation}\label{fitted-regression-equation}
+
+\[\hat{Y} = 0.1662 + 0.179 \times \log(\text{Brain mass})\]
+
+where: - \(\beta_0 = 0.1662\) (intercept) - \(\beta_1 = 0.179\) (slope)
+- \(R^2 = 0.6227\) (62.27\% of variation explained) - p-value
+\textless{} 0.001 (highly significant)
+
+\subsubsection{Interpretation}\label{interpretation}
+
+For each unit increase in log(brain mass), the glia-neuron ratio
+increases by 0.179 on average. This positive relationship is
+statistically significant and explains 62.3\% of the variation in
+glia-neuron ratio among non-human primates.
+
+\subsubsection{Scatterplot}\label{scatterplot}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create scatterplot with regression line}
+\FunctionTok{ggplot}\NormalTok{(nonhuman\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ log\_brain\_mass, }\AttributeTok{y =} \StringTok{\textasciigrave{}}\AttributeTok{Glia{-}neuron ratio}\StringTok{\textasciigrave{}}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{, }\AttributeTok{color =} \StringTok{"steelblue"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"pink"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Glia{-}Neuron Ratio vs Log Brain Mass"}\NormalTok{,}
+    \AttributeTok{subtitle =} \StringTok{"Non{-}Human Primates Only"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Log(Brain Mass) [g]"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Glia{-}Neuron Ratio"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}
+    \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{face =} \StringTok{"bold"}\NormalTok{, }\AttributeTok{size =} \DecValTok{14}\NormalTok{),}
+    \AttributeTok{axis.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{12}\NormalTok{)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{HW4_BowenXia_bx2232_files/figure-latex/problem2-plot-1.pdf}}
+\caption{Glia-Neuron Ratio vs Log Brain Mass for Non-Human Primates}
+\end{figure}
+
+\newpage
+
+\subsection{Part b) Prediction for
+Humans}\label{part-b-prediction-for-humans}
+
+Using the non-human primate relationship, we predict the glia-neuron
+ratio for humans given their brain mass.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Get human brain mass}
+\NormalTok{human\_brain\_mass }\OtherTok{\textless{}{-}}\NormalTok{ human\_data}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Brain mass (g)}\StringTok{\textasciigrave{}}
+\NormalTok{human\_log\_brain\_mass }\OtherTok{\textless{}{-}} \FunctionTok{log}\NormalTok{(human\_brain\_mass)}
+
+\CommentTok{\# Predict glia{-}neuron ratio for humans}
+\NormalTok{predicted\_human }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model\_brain, }
+                          \AttributeTok{newdata =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{log\_brain\_mass =}\NormalTok{ human\_log\_brain\_mass))}
+
+\NormalTok{actual\_human }\OtherTok{\textless{}{-}}\NormalTok{ human\_data}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Glia{-}neuron ratio}\StringTok{\textasciigrave{}}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Human brain mass:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(human\_brain\_mass, }\DecValTok{1}\NormalTok{), }\StringTok{"g}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Human brain mass: 1373.3 g
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Log(brain mass):"}\NormalTok{, }\FunctionTok{round}\NormalTok{(human\_log\_brain\_mass, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Log(brain mass): 7.225
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Predicted glia{-}neuron ratio:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(predicted\_human, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Predicted glia-neuron ratio: 1.4592
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Actual human glia{-}neuron ratio:"}\NormalTok{, actual\_human, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Actual human glia-neuron ratio: 1.65
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Difference (Actual {-} Predicted):"}\NormalTok{, }\FunctionTok{round}\NormalTok{(actual\_human }\SpecialCharTok{{-}}\NormalTok{ predicted\_human, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Difference (Actual - Predicted): 0.1908
+\end{verbatim}
+
+\subsubsection{Calculation}\label{calculation}
+
+\[\hat{Y}_{\text{human}} = 0.1662 + 0.179 \times 7.225 = 1.4592\]
+
+The actual human value (1.65) is higher than predicted (1.4592), with a
+difference of 0.1908.
+
+\newpage
+
+\subsection{Part c) 95\% Prediction
+Interval}\label{part-c-95-prediction-interval}
+
+A prediction interval accounts for both the uncertainty in the
+regression line and the variability of individual observations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate 95\% prediction interval}
+\NormalTok{pred\_interval }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model\_brain,}
+                        \AttributeTok{newdata =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{log\_brain\_mass =}\NormalTok{ human\_log\_brain\_mass),}
+                        \AttributeTok{interval =} \StringTok{"prediction"}\NormalTok{,}
+                        \AttributeTok{level =} \FloatTok{0.95}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"95\% Prediction Interval for Humans:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 95% Prediction Interval for Humans:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Lower bound:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(pred\_interval[}\DecValTok{2}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Lower bound: 1.0059
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Predicted value:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(pred\_interval[}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Predicted value: 1.4592
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Upper bound:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(pred\_interval[}\DecValTok{3}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Upper bound: 1.9125
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Actual human value:"}\NormalTok{, actual\_human, }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Actual human value: 1.65
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Check if human value is within the interval}
+\NormalTok{in\_interval }\OtherTok{\textless{}{-}}\NormalTok{ actual\_human }\SpecialCharTok{\textgreater{}=}\NormalTok{ pred\_interval[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{\&}\NormalTok{ actual\_human }\SpecialCharTok{\textless{}=}\NormalTok{ pred\_interval[}\DecValTok{3}\NormalTok{]}
+
+\ControlFlowTok{if}\NormalTok{ (in\_interval) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"The human glia{-}neuron ratio FALLS WITHIN the 95\% prediction interval.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"The human glia{-}neuron ratio EXCEEDS the 95\% prediction interval.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The human glia-neuron ratio FALLS WITHIN the 95% prediction interval.
+\end{verbatim}
+
+\subsubsection{Mathematical Formula}\label{mathematical-formula}
+
+The 95\% prediction interval is:
+\[\hat{Y} \pm t_{n-2, 0.025} \times SE_{\text{pred}}\]
+
+where
+\[SE_{\text{pred}} = s \sqrt{1 + \frac{1}{n} + \frac{(X_0 - \bar{X})^2}{\sum(X_i - \bar{X})^2}}\]
+
+and \(s = \sqrt{MSE}\) is the residual standard error.
+
+\subsubsection{Conclusion}\label{conclusion-2}
+
+The human glia-neuron ratio (1.65) falls within the 95\% prediction
+interval {[}1.0059, 1.9125{]}.
+
+This suggests that humans do NOT have a statistically excessive
+glia-neuron ratio for their brain mass compared to other primates, when
+accounting for prediction uncertainty.
+
+\newpage
+
+\subsection{Part d) Cautions About
+Extrapolation}\label{part-d-cautions-about-extrapolation}
+
+Several important considerations when using non-human primate data to
+make predictions about humans:
+
+\subsubsection{1. Extrapolation Beyond Data
+Range}\label{extrapolation-beyond-data-range}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Check data range}
+\NormalTok{nonhuman\_range }\OtherTok{\textless{}{-}} \FunctionTok{range}\NormalTok{(nonhuman\_data}\SpecialCharTok{$}\NormalTok{log\_brain\_mass)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Range of log(brain mass) in non{-}human data:"}\NormalTok{, }
+    \FunctionTok{round}\NormalTok{(nonhuman\_range[}\DecValTok{1}\NormalTok{], }\DecValTok{3}\NormalTok{), }\StringTok{"to"}\NormalTok{, }\FunctionTok{round}\NormalTok{(nonhuman\_range[}\DecValTok{2}\NormalTok{], }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Range of log(brain mass) in non-human data: 2.303 to 6.233
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Human log(brain mass):"}\NormalTok{, }\FunctionTok{round}\NormalTok{(human\_log\_brain\_mass, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Human log(brain mass): 7.225
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ (human\_log\_brain\_mass }\SpecialCharTok{\textgreater{}}\NormalTok{ nonhuman\_range[}\DecValTok{2}\NormalTok{]) \{}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"⚠️ WARNING: Human brain mass is BEYOND the range of non{-}human data!}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+  \FunctionTok{cat}\NormalTok{(}\StringTok{"This is EXTRAPOLATION, which is less reliable than interpolation.}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ⚠️ WARNING: Human brain mass is BEYOND the range of non-human data!
+## This is EXTRAPOLATION, which is less reliable than interpolation.
+\end{verbatim}
+
+\textbf{Issue:} The human brain mass (log scale: 7.225) exceeds the
+maximum in the non-human data (log scale: 6.233). Predictions outside
+the observed data range are inherently less reliable because we assume
+the linear relationship continues beyond where we have data.
+
+\subsubsection{2. Species-Specific
+Differences}\label{species-specific-differences}
+
+Humans possess unique evolutionary adaptations: - Larger and more
+complex frontal cortex - Different neuronal density and organization -
+Unique cognitive capabilities suggesting distinct brain architecture -
+Different metabolic regulation patterns
+
+\subsubsection{3. Model Assumptions}\label{model-assumptions}
+
+The analysis assumes: - \textbf{Linearity:} The relationship remains
+linear on the log scale across all primates - \textbf{Constant
+variance:} Variability is similar across the range (homoscedasticity) -
+\textbf{Independence:} Each species is an independent observation -
+\textbf{Normality:} Residuals are normally distributed
+
+These assumptions may not hold when extending to humans.
+
+\subsubsection{4. Sample Size
+Limitations}\label{sample-size-limitations}
+
+With only 16 non-human primate species, the model has limited precision.
+The width of the prediction interval reflects this uncertainty, but the
+extrapolation adds additional uncertainty not captured by the interval.
+
+\subsubsection{5. Biological Mechanisms}\label{biological-mechanisms}
+
+The relationship between brain size and glia-neuron ratio may be
+governed by different biological mechanisms in humans versus other
+primates, particularly given: - Longer lifespan - Extended period of
+brain development - Different energy metabolism - Unique selective
+pressures during evolution
+
+\subsubsection{Recommendation}\label{recommendation}
+
+While this analysis provides useful context, conclusions about human
+exceptionality should be made cautiously. The combination of
+extrapolation, species differences, and limited sample size suggests
+that \textbf{humans may differ from other primates in ways not captured
+by this simple model}. Additional data on great apes with larger brains,
+or mechanistic studies of glia-neuron relationships, would strengthen
+inferences about humans.
+
+\newpage
+
+\section{Problem 3: Heart Disease Cost Analysis (20
+points)}\label{problem-3-heart-disease-cost-analysis-20-points}
+
+\subsection{Problem Statement}\label{problem-statement-2}
+
+An investigator wants to determine if there is an association between
+total cost (dollars) of patients diagnosed with heart disease and the
+number of emergency room (ER) visits. The model may need adjustment for
+age, gender, number of complications, and duration of treatment.
+
+\subsection{Data Loading}\label{data-loading}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Load heart disease data}
+\NormalTok{heart\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/HeartDisease.csv"}\NormalTok{)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Data dimensions:"}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(heart\_data), }\StringTok{"observations,"}\NormalTok{, }\FunctionTok{ncol}\NormalTok{(heart\_data), }\StringTok{"variables}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Data dimensions: 788 observations, 10 variables
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Variable names:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Variable names:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\FunctionTok{names}\NormalTok{(heart\_data), }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## id, totalcost, age, gender, interventions, drugs, ERvisits, complications, comorbidities, duration
+\end{verbatim}
+
+\subsection{Part a) Descriptive
+Statistics}\label{part-a-descriptive-statistics}
+
+\subsubsection{Continuous Variables}\label{continuous-variables}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Select continuous variables}
+\NormalTok{continuous\_vars }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"totalcost"}\NormalTok{, }\StringTok{"age"}\NormalTok{, }\StringTok{"interventions"}\NormalTok{, }\StringTok{"drugs"}\NormalTok{, }
+                    \StringTok{"ERvisits"}\NormalTok{, }\StringTok{"complications"}\NormalTok{, }\StringTok{"comorbidities"}\NormalTok{, }\StringTok{"duration"}\NormalTok{)}
+
+\CommentTok{\# Create summary statistics}
+\NormalTok{desc\_stats }\OtherTok{\textless{}{-}}\NormalTok{ heart\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{all\_of}\NormalTok{(continuous\_vars)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{everything}\NormalTok{(), }
+                  \FunctionTok{list}\NormalTok{(}\AttributeTok{Mean =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{mean}\NormalTok{(., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+                       \AttributeTok{SD =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{sd}\NormalTok{(., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+                       \AttributeTok{Median =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{median}\NormalTok{(., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+                       \AttributeTok{Q1 =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{quantile}\NormalTok{(., }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+                       \AttributeTok{Q3 =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{quantile}\NormalTok{(., }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+                       \AttributeTok{Min =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{min}\NormalTok{(., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+                       \AttributeTok{Max =} \SpecialCharTok{\textasciitilde{}}\FunctionTok{max}\NormalTok{(., }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)),}
+                  \AttributeTok{.names =} \StringTok{"\{.col\}\_\{.fn\}"}\NormalTok{))}
+
+\CommentTok{\# Reshape for better display}
+\NormalTok{desc\_long }\OtherTok{\textless{}{-}}\NormalTok{ desc\_stats }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\FunctionTok{everything}\NormalTok{(), }\AttributeTok{names\_to =} \StringTok{"stat"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"value"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{separate}\NormalTok{(stat, }\AttributeTok{into =} \FunctionTok{c}\NormalTok{(}\StringTok{"Variable"}\NormalTok{, }\StringTok{"Statistic"}\NormalTok{), }\AttributeTok{sep =} \StringTok{"\_(?=[\^{}\_]+$)"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{names\_from =}\NormalTok{ Statistic, }\AttributeTok{values\_from =}\NormalTok{ value)}
+
+\FunctionTok{kable}\NormalTok{(desc\_long, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{, }\AttributeTok{caption =} \StringTok{"Descriptive Statistics for Continuous Variables"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2188}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1094}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1094}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0625}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}@{}}
+\caption{Descriptive Statistics for Continuous Variables}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+SD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Median
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Q1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Q3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Min
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Max
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+SD
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Median
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Q1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Q3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Min
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Max
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+totalcost & 2799.96 & 6690.26 & 507.2 & 161.12 & 1905.45 & 0 &
+52664.9 \\
+age & 58.72 & 6.75 & 60.0 & 55.00 & 64.00 & 24 & 70.0 \\
+interventions & 4.71 & 5.59 & 3.0 & 1.00 & 6.00 & 0 & 47.0 \\
+drugs & 0.45 & 1.06 & 0.0 & 0.00 & 0.00 & 0 & 9.0 \\
+ERvisits & 3.43 & 2.64 & 3.0 & 2.00 & 5.00 & 0 & 20.0 \\
+complications & 0.06 & 0.25 & 0.0 & 0.00 & 0.00 & 0 & 3.0 \\
+comorbidities & 3.77 & 5.95 & 1.0 & 0.00 & 5.00 & 0 & 60.0 \\
+duration & 164.03 & 120.92 & 165.5 & 41.75 & 281.00 & 0 & 372.0 \\
+\end{longtable}
+
+\subsubsection{Categorical Variables}\label{categorical-variables}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Gender distribution}
+\NormalTok{gender\_table }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{gender)}
+\NormalTok{gender\_prop }\OtherTok{\textless{}{-}} \FunctionTok{prop.table}\NormalTok{(gender\_table)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Gender Distribution:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Gender Distribution:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Male (0):"}\NormalTok{, gender\_table[}\DecValTok{1}\NormalTok{], }\FunctionTok{sprintf}\NormalTok{(}\StringTok{"(\%.1f\%\%)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, gender\_prop[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{*}\DecValTok{100}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Male (0): 608 (77.2%)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Female (1):"}\NormalTok{, gender\_table[}\DecValTok{2}\NormalTok{], }\FunctionTok{sprintf}\NormalTok{(}\StringTok{"(\%.1f\%\%)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, gender\_prop[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{*}\DecValTok{100}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Female (1): 180 (22.8%)
+\end{verbatim}
+
+\subsubsection{Key Observations}\label{key-observations}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Total cost} is highly variable (range: \$0 to \$52,664.9),
+  suggesting right-skewed distribution
+\item
+  \textbf{Mean cost} (\$2,799.96) \textgreater\textgreater{}
+  \textbf{Median cost} (\$507.2) confirms right skew
+\item
+  Most patients (77\%) are male
+\item
+  Complications are rare (mean = 0.06)
+\end{itemize}
+
+\newpage
+
+\subsection{Part b) Distribution and
+Transformation}\label{part-b-distribution-and-transformation}
+
+\subsubsection{Investigate Distribution}\label{investigate-distribution}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Check for zeros}
+\NormalTok{n\_zeros }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(heart\_data}\SpecialCharTok{$}\NormalTok{totalcost }\SpecialCharTok{==} \DecValTok{0}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Number of zero values in totalcost:"}\NormalTok{, n\_zeros, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Number of zero values in totalcost: 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"These will be excluded for log transformation.}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## These will be excluded for log transformation.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Filter out zeros for transformation analysis}
+\NormalTok{heart\_pos }\OtherTok{\textless{}{-}}\NormalTok{ heart\_data }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(totalcost }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{)}
+
+\CommentTok{\# Create transformations}
+\NormalTok{heart\_trans }\OtherTok{\textless{}{-}}\NormalTok{ heart\_pos }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{log\_cost =} \FunctionTok{log}\NormalTok{(totalcost),}
+    \AttributeTok{sqrt\_cost =} \FunctionTok{sqrt}\NormalTok{(totalcost)}
+\NormalTok{  )}
+
+\CommentTok{\# Normality tests}
+\NormalTok{shapiro\_orig }\OtherTok{\textless{}{-}} \FunctionTok{shapiro.test}\NormalTok{(}\FunctionTok{sample}\NormalTok{(heart\_pos}\SpecialCharTok{$}\NormalTok{totalcost, }\FunctionTok{min}\NormalTok{(}\DecValTok{5000}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(heart\_pos))))}
+\NormalTok{shapiro\_log }\OtherTok{\textless{}{-}} \FunctionTok{shapiro.test}\NormalTok{(}\FunctionTok{sample}\NormalTok{(heart\_trans}\SpecialCharTok{$}\NormalTok{log\_cost, }\FunctionTok{min}\NormalTok{(}\DecValTok{5000}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(heart\_trans))))}
+\NormalTok{shapiro\_sqrt }\OtherTok{\textless{}{-}} \FunctionTok{shapiro.test}\NormalTok{(}\FunctionTok{sample}\NormalTok{(heart\_trans}\SpecialCharTok{$}\NormalTok{sqrt\_cost, }\FunctionTok{min}\NormalTok{(}\DecValTok{5000}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(heart\_trans))))}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Shapiro{-}Wilk Tests for Normality:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Shapiro-Wilk Tests for Normality:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Original: W ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(shapiro\_orig}\SpecialCharTok{$}\NormalTok{statistic, }\DecValTok{4}\NormalTok{), }\StringTok{", p{-}value ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(shapiro\_orig}\SpecialCharTok{$}\NormalTok{p.value, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Original: W = 0.4406 , p-value = <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Log: W ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(shapiro\_log}\SpecialCharTok{$}\NormalTok{statistic, }\DecValTok{4}\NormalTok{), }\StringTok{", p{-}value ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(shapiro\_log}\SpecialCharTok{$}\NormalTok{p.value, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Log: W = 0.9952 , p-value = 0.0149
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Sqrt: W ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(shapiro\_sqrt}\SpecialCharTok{$}\NormalTok{statistic, }\DecValTok{4}\NormalTok{), }\StringTok{", p{-}value ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(shapiro\_sqrt}\SpecialCharTok{$}\NormalTok{p.value, }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Sqrt: W = 0.7303 , p-value = <2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate skewness}
+\FunctionTok{library}\NormalTok{(e1071)}
+\NormalTok{skew\_orig }\OtherTok{\textless{}{-}} \FunctionTok{skewness}\NormalTok{(heart\_pos}\SpecialCharTok{$}\NormalTok{totalcost)}
+\NormalTok{skew\_log }\OtherTok{\textless{}{-}} \FunctionTok{skewness}\NormalTok{(heart\_trans}\SpecialCharTok{$}\NormalTok{log\_cost)}
+\NormalTok{skew\_sqrt }\OtherTok{\textless{}{-}} \FunctionTok{skewness}\NormalTok{(heart\_trans}\SpecialCharTok{$}\NormalTok{sqrt\_cost)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Skewness:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Skewness:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Original:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(skew\_orig, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Original: 4.204
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Log{-}transformed:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(skew\_log, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Log-transformed: 0.087
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Square{-}root transformed:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(skew\_sqrt, }\DecValTok{3}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Square-root transformed: 2.313
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create plots}
+\NormalTok{p1 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(heart\_pos, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ totalcost)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{40}\NormalTok{, }\AttributeTok{fill =} \StringTok{"lightblue"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Original Scale"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Total Cost"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Frequency"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{p2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(heart\_trans, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{sample =}\NormalTok{ totalcost)) }\SpecialCharTok{+}
+  \FunctionTok{stat\_qq}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_qq\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q{-}Q Plot (Original)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{p3 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(heart\_trans, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ log\_cost)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{40}\NormalTok{, }\AttributeTok{fill =} \StringTok{"lightgreen"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Log Transform"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Log(Total Cost)"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Frequency"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{p4 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(heart\_trans, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{sample =}\NormalTok{ log\_cost)) }\SpecialCharTok{+}
+  \FunctionTok{stat\_qq}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_qq\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q{-}Q Plot (Log)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{p5 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(heart\_trans, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ sqrt\_cost)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{40}\NormalTok{, }\AttributeTok{fill =} \StringTok{"lightyellow"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Square Root Transform"}\NormalTok{, }\AttributeTok{x =} \StringTok{"√(Total Cost)"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Frequency"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\NormalTok{p6 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(heart\_trans, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{sample =}\NormalTok{ sqrt\_cost)) }\SpecialCharTok{+}
+  \FunctionTok{stat\_qq}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_qq\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Q{-}Q Plot (Sqrt)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+
+\CommentTok{\# Arrange plots}
+\NormalTok{(p1 }\SpecialCharTok{|}\NormalTok{ p2) }\SpecialCharTok{/}\NormalTok{ (p3 }\SpecialCharTok{|}\NormalTok{ p4) }\SpecialCharTok{/}\NormalTok{ (p5 }\SpecialCharTok{|}\NormalTok{ p6)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{HW4_BowenXia_bx2232_files/figure-latex/problem3-distribution-1.pdf}}
+\caption{Distribution of Total Cost: Original and Transformed}
+\end{figure}
+
+\subsubsection{Recommendation}\label{recommendation-1}
+
+Based on the diagnostic tests:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Original scale}: Severely right-skewed (skewness = 4.2)
+\item
+  \textbf{Log transformation}: Nearly symmetric (skewness = 0.09) ✓
+\item
+  \textbf{Square root}: Still right-skewed (skewness = 2.31)
+\end{itemize}
+
+\textbf{Decision: Use LOG TRANSFORMATION}
+
+The log transformation reduces skewness dramatically and produces a
+distribution much closer to normal. This is standard practice for cost
+data, which typically follows a log-normal distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create working dataset with log transformation}
+\NormalTok{heart\_analysis }\OtherTok{\textless{}{-}}\NormalTok{ heart\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(totalcost }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}  \CommentTok{\# Remove zeros for log transformation}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{log\_totalcost =} \FunctionTok{log}\NormalTok{(totalcost))}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"After removing"}\NormalTok{, n\_zeros, }\StringTok{"zero values, n ="}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(heart\_analysis), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## After removing 3 zero values, n = 785
+\end{verbatim}
+
+\newpage
+
+\subsection{Part c) Create comp\_bin
+Variable}\label{part-c-create-comp_bin-variable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create binary complications variable}
+\NormalTok{heart\_analysis }\OtherTok{\textless{}{-}}\NormalTok{ heart\_analysis }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{comp\_bin =} \FunctionTok{ifelse}\NormalTok{(complications }\SpecialCharTok{==} \DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\CommentTok{\# Summary}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Complications Variable (original):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Complications Variable (original):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(heart\_analysis}\SpecialCharTok{$}\NormalTok{complications))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##   0   1   3 
+## 742  42   1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{Comp\_bin Variable (binary):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## 
+## Comp_bin Variable (binary):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(heart\_analysis}\SpecialCharTok{$}\NormalTok{comp\_bin))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##   0   1 
+## 742  43
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{Interpretation:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## 
+## Interpretation:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  comp\_bin = 0: No complications ("}\NormalTok{, }\FunctionTok{sum}\NormalTok{(heart\_analysis}\SpecialCharTok{$}\NormalTok{comp\_bin }\SpecialCharTok{==} \DecValTok{0}\NormalTok{), }\StringTok{"patients)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   comp_bin = 0: No complications ( 742 patients)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  comp\_bin = 1: ≥1 complication ("}\NormalTok{, }\FunctionTok{sum}\NormalTok{(heart\_analysis}\SpecialCharTok{$}\NormalTok{comp\_bin }\SpecialCharTok{==} \DecValTok{1}\NormalTok{), }\StringTok{"patients)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   comp_bin = 1: ≥1 complication ( 43 patients)
+\end{verbatim}
+
+\newpage
+
+\subsection{Part d) Simple Linear Regression
+(SLR)}\label{part-d-simple-linear-regression-slr}
+
+\subsubsection{Model Specification}\label{model-specification}
+
+\textbf{Model:}
+\[\log(\text{totalcost}) = \beta_0 + \beta_1 \times \text{ERvisits} + \epsilon\]
+
+where \(\epsilon \sim N(0, \sigma^2)\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Fit simple linear regression}
+\NormalTok{slr\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_totalcost }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ERvisits, }\AttributeTok{data =}\NormalTok{ heart\_analysis)}
+
+\CommentTok{\# Model summary}
+\FunctionTok{summary}\NormalTok{(slr\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_totalcost ~ ERvisits, data = heart_analysis)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.2013 -1.1265  0.0191  1.2668  4.2797 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  5.53771    0.10362   53.44   <2e-16 ***
+## ERvisits     0.22672    0.02397    9.46   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.772 on 783 degrees of freedom
+## Multiple R-squared:  0.1026, Adjusted R-squared:  0.1014 
+## F-statistic:  89.5 on 1 and 783 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Store results}
+\NormalTok{slr\_summary }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(slr\_model)}
+\NormalTok{slr\_coef\_er }\OtherTok{\textless{}{-}}\NormalTok{ slr\_summary}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{2}\NormalTok{]}
+\NormalTok{slr\_pval }\OtherTok{\textless{}{-}}\NormalTok{ slr\_summary}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{2}\NormalTok{]}
+\NormalTok{slr\_r2 }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(slr\_model)}\SpecialCharTok{$}\NormalTok{r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Results Table}\label{results-table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{tidy}\NormalTok{(slr\_model), }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"Simple Linear Regression Results"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{Simple Linear Regression Results}\tabularnewline
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 5.5377 & 0.1036 & 53.4442 & 0 \\
+ERvisits & 0.2267 & 0.0240 & 9.4603 & 0 \\
+\end{longtable}
+
+\subsubsection{Fitted Equation}\label{fitted-equation}
+
+\[\widehat{\log(\text{totalcost})} = 5.5377 + 0.2267 \times \text{ERvisits}\]
+
+\subsubsection{Interpretation}\label{interpretation-1}
+
+\textbf{Slope (\(\beta_1 = 0.2267\)):}
+
+On the log scale: For each additional ER visit, log(total cost)
+increases by 0.2267 units.
+
+On the original scale: For each additional ER visit, total cost
+increases by a multiplicative factor of \(e^{0.2267} = 1.2545\),
+corresponding to a \textbf{25.45\% increase} in cost.
+
+\textbf{Statistical Significance:} - P-value \textless{} 0.001 (highly
+significant) - 95\% CI: {[}0.1797, 0.2738{]}
+
+\textbf{Model Fit:} - \(R^2 = 0.1026\) (10.26\% of variance explained)
+
+\subsubsection{Scatterplot}\label{scatterplot-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(heart\_analysis, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ ERvisits, }\AttributeTok{y =}\NormalTok{ log\_totalcost)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{color =} \StringTok{"steelblue"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method =} \StringTok{"lm"}\NormalTok{, }\AttributeTok{se =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"pink"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Log(Total Cost) vs ER Visits"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Number of ER Visits"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Log(Total Cost)"}\NormalTok{,}
+    \AttributeTok{subtitle =} \FunctionTok{sprintf}\NormalTok{(}\StringTok{"R² = \%.4f, β₁ = \%.4f, p \textless{} 0.001"}\NormalTok{, slr\_r2, slr\_coef\_er)}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{HW4_BowenXia_bx2232_files/figure-latex/problem3-slr-plot-1.pdf}}
+\caption{Simple Linear Regression: Log(Total Cost) vs ER Visits}
+\end{figure}
+
+\textbf{Conclusion:} There is a \textbf{significant positive
+association} between ER visits and total cost. Each additional ER visit
+is associated with a 25.45\% increase in cost.
+
+\newpage
+
+\subsection{Part e) Multiple Linear Regression with
+comp\_bin}\label{part-e-multiple-linear-regression-with-comp_bin}
+
+\subsubsection{Part e.I) Test for
+Interaction}\label{part-e.i-test-for-interaction}
+
+We test whether the effect of ER visits on cost differs by complication
+status.
+
+\textbf{Model with Interaction:}
+\[\log(\text{totalcost}) = \beta_0 + \beta_1 \times \text{ERvisits} + \beta_2 \times \text{comp\_bin} + \beta_3 \times (\text{ERvisits} \times \text{comp\_bin}) + \epsilon\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Fit model with interaction}
+\NormalTok{mlr\_interaction }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_totalcost }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ERvisits }\SpecialCharTok{*}\NormalTok{ comp\_bin, }\AttributeTok{data =}\NormalTok{ heart\_analysis)}
+
+\CommentTok{\# Summary}
+\FunctionTok{summary}\NormalTok{(mlr\_interaction)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_totalcost ~ ERvisits * comp_bin, data = heart_analysis)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.0852 -1.0802 -0.0078  1.1898  4.3803 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        5.49899    0.10349  53.138  < 2e-16 ***
+## ERvisits           0.21125    0.02453   8.610  < 2e-16 ***
+## comp_bin           2.17969    0.54604   3.992 7.17e-05 ***
+## ERvisits:comp_bin -0.09927    0.09483  -1.047    0.296    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.732 on 781 degrees of freedom
+## Multiple R-squared:  0.1449, Adjusted R-squared:  0.1417 
+## F-statistic: 44.13 on 3 and 781 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Extract interaction p{-}value}
+\NormalTok{int\_pval }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(mlr\_interaction) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"ERvisits:comp\_bin"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pull}\NormalTok{(p.value)}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{tidy}\NormalTok{(mlr\_interaction), }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"MLR with Interaction"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{MLR with Interaction}\tabularnewline
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 5.4990 & 0.1035 & 53.1380 & 0.0000 \\
+ERvisits & 0.2112 & 0.0245 & 8.6103 & 0.0000 \\
+comp\_bin & 2.1797 & 0.5460 & 3.9918 & 0.0001 \\
+ERvisits:comp\_bin & -0.0993 & 0.0948 & -1.0467 & 0.2955 \\
+\end{longtable}
+
+\textbf{Interpretation of Coefficients:}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\beta_1\) (\texttt{ERvisits}): Effect of ER visits when comp\_bin =
+  0 (no complications)
+\item
+  \(\beta_2\) (\texttt{comp\_bin}): Difference in intercept for patients
+  with complications
+\item
+  \(\beta_3\) (\texttt{ERvisits:comp\_bin}): \textbf{Additional} effect
+  of ER visits for patients with complications
+\end{itemize}
+
+\textbf{Test for Interaction:}
+\[H_0: \beta_3 = 0 \text{ vs. } H_a: \beta_3 \neq 0\]
+
+\textbf{Results:} - Interaction coefficient: -0.0993 - P-value: 0.2955
+
+\textbf{Conclusion:} With p-value = 0.2955 \textless{} 0.05, we fail to
+reject \(H_0\). There is NO significant evidence that the effect of ER
+visits on cost differs by complication status. The \textbf{parallel
+slopes model} is appropriate.
+
+\newpage
+
+\subsubsection{Part e.II) Test for
+Confounding}\label{part-e.ii-test-for-confounding}
+
+A variable is a confounder if: 1. It's associated with both the
+predictor and outcome 2. Adjusting for it changes the coefficient of the
+primary predictor by \textgreater10\%
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Fit model without interaction}
+\NormalTok{mlr\_no\_interaction }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_totalcost }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ERvisits }\SpecialCharTok{+}\NormalTok{ comp\_bin, }\AttributeTok{data =}\NormalTok{ heart\_analysis)}
+
+\CommentTok{\# Compare coefficients}
+\NormalTok{coef\_slr }\OtherTok{\textless{}{-}} \FunctionTok{coef}\NormalTok{(slr\_model)[}\StringTok{"ERvisits"}\NormalTok{]}
+\NormalTok{coef\_mlr }\OtherTok{\textless{}{-}} \FunctionTok{coef}\NormalTok{(mlr\_no\_interaction)[}\StringTok{"ERvisits"}\NormalTok{]}
+\NormalTok{pct\_change }\OtherTok{\textless{}{-}} \FunctionTok{abs}\NormalTok{((coef\_mlr }\SpecialCharTok{{-}}\NormalTok{ coef\_slr) }\SpecialCharTok{/}\NormalTok{ coef\_slr) }\SpecialCharTok{*} \DecValTok{100}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Confounding Assessment:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confounding Assessment:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  ERvisits coefficient in SLR:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(coef\_slr, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   ERvisits coefficient in SLR: 0.2267
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  ERvisits coefficient in MLR (+ comp\_bin):"}\NormalTok{, }\FunctionTok{round}\NormalTok{(coef\_mlr, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   ERvisits coefficient in MLR (+ comp_bin): 0.2046
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Absolute change:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{abs}\NormalTok{(coef\_mlr }\SpecialCharTok{{-}}\NormalTok{ coef\_slr), }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Absolute change: 0.0221
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Percent change:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(pct\_change, }\DecValTok{2}\NormalTok{), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Percent change: 9.76 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Summary of MLR}
+\FunctionTok{summary}\NormalTok{(mlr\_no\_interaction)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_totalcost ~ ERvisits + comp_bin, data = heart_analysis)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.0741 -1.0737 -0.0181  1.1810  4.3848 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   5.5211     0.1013  54.495  < 2e-16 ***
+## ERvisits      0.2046     0.0237   8.633  < 2e-16 ***
+## comp_bin      1.6859     0.2749   6.132 1.38e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.732 on 782 degrees of freedom
+## Multiple R-squared:  0.1437, Adjusted R-squared:  0.1416 
+## F-statistic: 65.64 on 2 and 782 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{tidy}\NormalTok{(mlr\_no\_interaction), }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"MLR without Interaction"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{MLR without Interaction}\tabularnewline
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 5.5211 & 0.1013 & 54.4954 & 0 \\
+ERvisits & 0.2046 & 0.0237 & 8.6329 & 0 \\
+comp\_bin & 1.6859 & 0.2749 & 6.1317 & 0 \\
+\end{longtable}
+
+\textbf{Interpretation:}
+
+The ERvisits coefficient changes from 0.2267 (SLR) to 0.2046 (MLR), a
+9.76\% change.
+
+\textbf{Conclusion:} Since the coefficient changes by less than 10\%,
+comp\_bin is NOT a confounder of the relationship between ER visits and
+total cost.
+
+\subsubsection{Part e.III) Should comp\_bin be
+Included?}\label{part-e.iii-should-comp_bin-be-included}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{comp\_pval }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(mlr\_no\_interaction) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(term }\SpecialCharTok{==} \StringTok{"comp\_bin"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pull}\NormalTok{(p.value)}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"comp\_bin in MLR:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## comp_bin in MLR:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Coefficient:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(}\FunctionTok{coef}\NormalTok{(mlr\_no\_interaction)[}\StringTok{"comp\_bin"}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Coefficient: 1.6859
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  P{-}value:"}\NormalTok{, }\FunctionTok{format.pval}\NormalTok{(comp\_pval, }\AttributeTok{digits =} \DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   P-value: 1.379e-09
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Decision Criteria:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Decision Criteria:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  1. Statistical significance (p \textless{} 0.05):"}\NormalTok{, comp\_pval }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   1. Statistical significance (p < 0.05): TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  2. Confounding (\textgreater{}10\% change):"}\NormalTok{, pct\_change }\SpecialCharTok{\textgreater{}} \DecValTok{10}\NormalTok{, }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   2. Confounding (>10% change): FALSE
+\end{verbatim}
+
+\textbf{Decision: INCLUDE comp\_bin in the model}
+
+\textbf{Reasoning:} - comp\_bin is \textbf{statistically significant} (p
+\textless{} 0.05) - Clinically meaningful: complications substantially
+impact costs - Omitting comp\_bin would produce biased estimates of the
+ER visits effect
+
+\newpage
+
+\subsection{Part f) Full Multiple Linear
+Regression}\label{part-f-full-multiple-linear-regression}
+
+\subsubsection{Part f.I) Full MLR with All
+Covariates}\label{part-f.i-full-mlr-with-all-covariates}
+
+Based on Part e analysis, we include comp\_bin along with other
+covariates.
+
+\textbf{Model:}
+\[\log(\text{totalcost}) = \beta_0 + \beta_1 \times \text{ERvisits} + \beta_2 \times \text{comp\_bin} + \beta_3 \times \text{age} + \beta_4 \times \text{gender} + \beta_5 \times \text{duration} + \epsilon\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Fit full model}
+\NormalTok{full\_mlr }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(log\_totalcost }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ERvisits }\SpecialCharTok{+}\NormalTok{ comp\_bin }\SpecialCharTok{+}\NormalTok{ age }\SpecialCharTok{+}\NormalTok{ gender }\SpecialCharTok{+}\NormalTok{ duration, }
+               \AttributeTok{data =}\NormalTok{ heart\_analysis)}
+
+\CommentTok{\# Model summary}
+\FunctionTok{summary}\NormalTok{(full\_mlr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log_totalcost ~ ERvisits + comp_bin + age + gender + 
+##     duration, data = heart_analysis)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.0823 -1.0555 -0.1352  0.9533  4.3462 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  6.0449619  0.5063454  11.938  < 2e-16 ***
+## ERvisits     0.1757486  0.0223189   7.874 1.15e-14 ***
+## comp_bin     1.4921110  0.2554883   5.840 7.65e-09 ***
+## age         -0.0221376  0.0086023  -2.573   0.0103 *  
+## gender      -0.1176181  0.1379809  -0.852   0.3942    
+## duration     0.0055406  0.0004848  11.428  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.605 on 779 degrees of freedom
+## Multiple R-squared:  0.268,  Adjusted R-squared:  0.2633 
+## F-statistic: 57.03 on 5 and 779 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Coefficient table}
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{tidy}\NormalTok{(full\_mlr), }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"Full Multiple Linear Regression Results"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{Full Multiple Linear Regression Results}\tabularnewline
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+term & estimate & std.error & statistic & p.value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 6.0450 & 0.5063 & 11.9384 & 0.0000 \\
+ERvisits & 0.1757 & 0.0223 & 7.8744 & 0.0000 \\
+comp\_bin & 1.4921 & 0.2555 & 5.8402 & 0.0000 \\
+age & -0.0221 & 0.0086 & -2.5735 & 0.0103 \\
+gender & -0.1176 & 0.1380 & -0.8524 & 0.3942 \\
+duration & 0.0055 & 0.0005 & 11.4281 & 0.0000 \\
+\end{longtable}
+
+\subsubsection{Fitted Regression
+Equation}\label{fitted-regression-equation-1}
+
+\[\begin{aligned}
+\widehat{\log(\text{totalcost})} = &\ 6.045 \\
+&+ 0.1757 \times \text{ERvisits} \\
+&+ 1.4921 \times \text{comp\_bin} \\
+&-0.0221 \times \text{age} \\
+&-0.1176 \times \text{gender} \\
+&+ 0.0055 \times \text{duration}
+\end{aligned}\]
+
+\subsubsection{Interpretation of Each
+Coefficient}\label{interpretation-of-each-coefficient}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Extract coefficients and p{-}values}
+\NormalTok{coefs }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(full\_mlr)}
+
+\CommentTok{\# Function to interpret log{-}scale coefficient}
+\NormalTok{interpret\_coef }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(beta) \{}
+\NormalTok{  pct }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{exp}\NormalTok{(beta) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{*} \DecValTok{100}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{round}\NormalTok{(pct, }\DecValTok{2}\NormalTok{))}
+\NormalTok{\}}
+
+\CommentTok{\# Create interpretation text}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Coefficient Interpretations:}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Coefficient Interpretations:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"1. ERvisits (β₁ ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{2}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{", p ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{2}\NormalTok{], }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 1. ERvisits (β₁ = 0.1757 , p = 1.15e-14 ):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   Each additional ER visit increases total cost by"}\NormalTok{, }
+    \FunctionTok{interpret\_coef}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{2}\NormalTok{]), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Each additional ER visit increases total cost by 19.21 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  "}\NormalTok{, }\FunctionTok{ifelse}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{2}\NormalTok{] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"✓ SIGNIFICANT"}\NormalTok{, }\StringTok{"✗ Not significant"}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    ✓ SIGNIFICANT
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"2. comp\_bin (β₂ ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{3}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{", p ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{3}\NormalTok{], }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 2. comp_bin (β₂ = 1.4921 , p = 7.65e-09 ):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   Having complications increases total cost by"}\NormalTok{, }
+    \FunctionTok{interpret\_coef}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{3}\NormalTok{]), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Having complications increases total cost by 344.65 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  "}\NormalTok{, }\FunctionTok{ifelse}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{3}\NormalTok{] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"✓ SIGNIFICANT"}\NormalTok{, }\StringTok{"✗ Not significant"}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    ✓ SIGNIFICANT
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"3. age (β₃ ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{4}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{", p ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{4}\NormalTok{], }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 3. age (β₃ = -0.0221 , p = 0.0103 ):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   Each additional year of age changes total cost by"}\NormalTok{, }
+    \FunctionTok{interpret\_coef}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{4}\NormalTok{]), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Each additional year of age changes total cost by -2.19 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  "}\NormalTok{, }\FunctionTok{ifelse}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{4}\NormalTok{] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"✓ SIGNIFICANT"}\NormalTok{, }\StringTok{"✗ Not significant"}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    ✓ SIGNIFICANT
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"4. gender (β₄ ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{5}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{", p ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{5}\NormalTok{], }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 4. gender (β₄ = -0.1176 , p = 0.394 ):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   Gender difference in total cost:"}\NormalTok{, }
+    \FunctionTok{interpret\_coef}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{5}\NormalTok{]), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Gender difference in total cost: -11.1 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  "}\NormalTok{, }\FunctionTok{ifelse}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{5}\NormalTok{] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"✓ SIGNIFICANT"}\NormalTok{, }\StringTok{"✗ Not significant"}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    ✗ Not significant
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"5. duration (β₅ ="}\NormalTok{, }\FunctionTok{round}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{6}\NormalTok{], }\DecValTok{4}\NormalTok{), }\StringTok{", p ="}\NormalTok{, }
+    \FunctionTok{format.pval}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{6}\NormalTok{], }\AttributeTok{digits =} \DecValTok{3}\NormalTok{), }\StringTok{"):}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 5. duration (β₅ = 0.0055 , p = <2e-16 ):
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"   Each additional day of treatment increases total cost by"}\NormalTok{, }
+    \FunctionTok{interpret\_coef}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{estimate[}\DecValTok{6}\NormalTok{]), }\StringTok{"\%}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Each additional day of treatment increases total cost by 0.56 %
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  "}\NormalTok{, }\FunctionTok{ifelse}\NormalTok{(coefs}\SpecialCharTok{$}\NormalTok{p.value[}\DecValTok{6}\NormalTok{] }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, }\StringTok{"✓ SIGNIFICANT"}\NormalTok{, }\StringTok{"✗ Not significant"}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    ✓ SIGNIFICANT
+\end{verbatim}
+
+\textbf{Significant Variables (α = 0.05):}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sig\_vars }\OtherTok{\textless{}{-}}\NormalTok{ coefs }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(p.value }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, term }\SpecialCharTok{!=} \StringTok{"(Intercept)"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pull}\NormalTok{(term)}
+
+\FunctionTok{cat}\NormalTok{(}\FunctionTok{paste}\NormalTok{(sig\_vars, }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ERvisits, comp_bin, age, duration
+\end{verbatim}
+
+\newpage
+
+\subsubsection{Part f.II) Model
+Comparison}\label{part-f.ii-model-comparison}
+
+We compare the SLR (ERvisits only) to the full MLR using a nested model
+F-test.
+
+\textbf{Hypotheses:}
+\[H_0: \beta_2 = \beta_3 = \beta_4 = \beta_5 = 0 \text{ vs. } H_a: \text{at least one } \beta_j \neq 0\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ANOVA for nested models}
+\NormalTok{anova\_result }\OtherTok{\textless{}{-}} \FunctionTok{anova}\NormalTok{(slr\_model, full\_mlr)}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{tidy}\NormalTok{(anova\_result), }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"ANOVA for Nested Model Comparison"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.5487}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1062}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0796}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0265}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0796}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0885}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0708}}@{}}
+\caption{ANOVA for Nested Model Comparison}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+term
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+df.residual
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+rss
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+sumsq
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+statistic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p.value
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+term
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+df.residual
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+rss
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+df
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+sumsq
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+statistic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p.value
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+log\_totalcost \textasciitilde{} ERvisits & 783 & 2459.849 & NA & NA &
+NA & NA \\
+log\_totalcost \textasciitilde{} ERvisits + comp\_bin + age + gender +
+duration & 779 & 2006.552 & 4 & 453.2972 & 43.9957 & 0 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate additional statistics}
+\NormalTok{r2\_slr }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(slr\_model)}\SpecialCharTok{$}\NormalTok{r.squared}
+\NormalTok{r2\_full }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(full\_mlr)}\SpecialCharTok{$}\NormalTok{r.squared}
+\NormalTok{adj\_r2\_slr }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(slr\_model)}\SpecialCharTok{$}\NormalTok{adj.r.squared}
+\NormalTok{adj\_r2\_full }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(full\_mlr)}\SpecialCharTok{$}\NormalTok{adj.r.squared}
+\NormalTok{f\_stat }\OtherTok{\textless{}{-}}\NormalTok{ anova\_result}\SpecialCharTok{$}\NormalTok{F[}\DecValTok{2}\NormalTok{]}
+\NormalTok{f\_pval }\OtherTok{\textless{}{-}}\NormalTok{ anova\_result}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Pr(\textgreater{}F)}\StringTok{\textasciigrave{}}\NormalTok{[}\DecValTok{2}\NormalTok{]}
+
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Model Comparison Summary:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Model Comparison Summary:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"─────────────────────────────────────────}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ─────────────────────────────────────────
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"SLR Model:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## SLR Model:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  R²:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(r2\_slr, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   R²: 0.1026
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Adjusted R²:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(adj\_r2\_slr, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Adjusted R²: 0.1014
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Predictors: ERvisits only}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Predictors: ERvisits only
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Full MLR Model:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Full MLR Model:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  R²:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(r2\_full, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   R²: 0.268
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Adjusted R²:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(adj\_r2\_full, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Adjusted R²: 0.2633
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  Predictors: ERvisits + comp\_bin + age + gender + duration}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Predictors: ERvisits + comp_bin + age + gender + duration
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Improvement:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Improvement:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  ΔR²:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(r2\_full }\SpecialCharTok{{-}}\NormalTok{ r2\_slr, }\DecValTok{4}\NormalTok{), }
+    \FunctionTok{sprintf}\NormalTok{(}\StringTok{"(\%.1f\%\% → \%.1f\%\%)}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, r2\_slr}\SpecialCharTok{*}\DecValTok{100}\NormalTok{, r2\_full}\SpecialCharTok{*}\DecValTok{100}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   ΔR²: 0.1654 (10.3% → 26.8%)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  ΔAdj R²:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(adj\_r2\_full }\SpecialCharTok{{-}}\NormalTok{ adj\_r2\_slr, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   ΔAdj R²: 0.1618
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"F{-}test:}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## F-test:
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  F{-}statistic:"}\NormalTok{, }\FunctionTok{round}\NormalTok{(f\_stat, }\DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   F-statistic: 43.9957
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"  P{-}value:"}\NormalTok{, }\FunctionTok{format.pval}\NormalTok{(f\_pval, }\AttributeTok{digits =} \DecValTok{4}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   P-value: < 2.2e-16
+\end{verbatim}
+
+\subsubsection{Mathematical Formula for
+F-test}\label{mathematical-formula-for-f-test}
+
+The F-statistic for comparing nested models is:
+\[F = \frac{(RSS_{\text{reduced}} - RSS_{\text{full}}) / (p_{\text{full}} - p_{\text{reduced}})}{RSS_{\text{full}} / (n - p_{\text{full}})}\]
+
+Under \(H_0\), this follows an \(F\)-distribution with degrees of
+freedom \((p_{\text{full}} - p_{\text{reduced}}, n - p_{\text{full}})\).
+
+\subsubsection{Recommendation}\label{recommendation-2}
+
+\textbf{Decision: Use the FULL MLR model}
+
+\textbf{Reasoning:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Statistical Evidence:} The F-test is highly significant (p
+  \textless{} 0.001), indicating that the additional predictors
+  significantly improve model fit.
+\item
+  \textbf{Explained Variance:} The full MLR explains 26.8\% of variance
+  compared to only 10.3\% for the SLR---a 16.5 percentage point
+  improvement.
+\item
+  \textbf{Confounder Control:} The MLR adjusts for important confounders
+  (complications, age, duration), providing a more accurate estimate of
+  the ER visits effect.
+\item
+  \textbf{Clinical Relevance:} All additional predictors except gender
+  are statistically significant and clinically meaningful.
+\item
+  \textbf{Research Objective:} The MLR better addresses the
+  investigator's goal by isolating the effect of ER visits while
+  controlling for other factors that affect costs.
+\item
+  \textbf{Effect Size:} The ER visits effect is reduced from 25.4\%
+  (SLR) to 19.2\% (MLR), suggesting confounding by omitted variables in
+  the simple model.
+\end{enumerate}
+
+\subsubsection{Diagnostic Plots}\label{diagnostic-plots}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create diagnostic plots}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(full\_mlr, }\AttributeTok{which =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{HW4_BowenXia_bx2232_files/figure-latex/problem3-diagnostics-1.pdf}}
+\caption{Diagnostic Plots for Full MLR Model}
+\end{figure}
+
+\textbf{Diagnostic Assessment:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Residuals vs Fitted:} Should show random scatter around zero
+  (no pattern)
+\item
+  \textbf{Q-Q Plot:} Points should follow the diagonal line (normality
+  of residuals)
+\item
+  \textbf{Scale-Location:} Should show random scatter (homoscedasticity)
+\item
+  \textbf{Residuals vs Leverage:} Identifies influential observations
+\end{enumerate}
+
+The diagnostics suggest: - Residuals are approximately normally
+distributed - Variance appears relatively constant (though some
+heteroscedasticity may be present) - A few high-leverage points but none
+appear overly influential - The log transformation has improved model
+assumptions
+
+\newpage
+
+\section{Summary and Conclusions}\label{summary-and-conclusions}
+
+\subsection{Problem 1: Blood Sugar
+Analysis}\label{problem-1-blood-sugar-analysis}
+
+Both the sign test (p = 0.8463) and Wilcoxon signed-rank test (p =
+0.1447) failed to provide evidence that the median blood sugar is less
+than 120 mg/dL. The sample median of 118 mg/dL is not significantly
+different from 120.
+
+\subsection{Problem 2: Brain Data
+Analysis}\label{problem-2-brain-data-analysis}
+
+While humans have a higher glia-neuron ratio (1.65) than predicted from
+the non-human primate relationship (1.459), this value falls within the
+95\% prediction interval {[}1.0059, 1.9125{]}. However, this analysis
+requires caution because:
+
+\begin{itemize}
+\tightlist
+\item
+  Human brain mass exceeds the range of non-human data (extrapolation)
+\item
+  Unique human evolutionary adaptations may not follow the same
+  relationship
+\item
+  Limited sample size reduces precision
+\end{itemize}
+
+Therefore, we cannot conclusively determine if humans have an
+``excessive'' glia-neuron ratio.
+
+\subsection{Problem 3: Heart Disease Cost
+Analysis}\label{problem-3-heart-disease-cost-analysis}
+
+The full multiple linear regression model is strongly preferred over the
+simple model:
+
+\textbf{Key Findings:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{ER Visits:} Each additional ER visit increases costs by 19.2\%
+  (p \textless{} 0.001)
+\item
+  \textbf{Complications:} Having complications increases costs by
+  344.6\% (p \textless{} 0.001)---the strongest predictor
+\item
+  \textbf{Duration:} Each additional treatment day increases costs by
+  0.56\% (p \textless{} 0.001)
+\item
+  \textbf{Age:} Surprisingly, older age is associated with slightly
+  lower costs (p = 0.010)
+\item
+  \textbf{Gender:} Not a significant predictor after controlling for
+  other factors
+\end{enumerate}
+
+The multiple regression model explains 26.8\% of variance in
+log-transformed costs, compared to only 10.3\% for the simple model with
+ER visits alone.
+
+\newpage
+
+\section{Appendix: R Code}\label{appendix-r-code}
+
+All R code used in this analysis is embedded in the R Markdown document.
+The complete, commented code can also be found in the accompanying R
+script file (\texttt{HW4\_solutions.R}).
+
+\subsection{Session Information}\label{session-information}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sessionInfo}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R version 4.5.1 (2025-06-13)
+## Platform: aarch64-apple-darwin20
+## Running under: macOS Sequoia 15.5
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## time zone: America/New_York
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] e1071_1.7-16    patchwork_1.3.2 broom_1.0.9     knitr_1.50     
+##  [5] readxl_1.4.5    lubridate_1.9.4 forcats_1.0.0   stringr_1.5.1  
+##  [9] dplyr_1.1.4     purrr_1.1.0     readr_2.1.5     tidyr_1.3.1    
+## [13] tibble_3.3.0    ggplot2_3.5.2   tidyverse_2.0.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] generics_0.1.4     class_7.3-23       stringi_1.8.7      lattice_0.22-7    
+##  [5] hms_1.1.3          digest_0.6.37      magrittr_2.0.3     evaluate_1.0.5    
+##  [9] grid_4.5.1         timechange_0.3.0   RColorBrewer_1.1-3 fastmap_1.2.0     
+## [13] cellranger_1.1.0   Matrix_1.7-3       backports_1.5.0    mgcv_1.9-3        
+## [17] scales_1.4.0       cli_3.6.5          crayon_1.5.3       rlang_1.1.6       
+## [21] bit64_4.6.0-1      splines_4.5.1      withr_3.0.2        yaml_2.3.10       
+## [25] parallel_4.5.1     tools_4.5.1        tzdb_0.5.0         vctrs_0.6.5       
+## [29] R6_2.6.1           proxy_0.4-27       lifecycle_1.0.4    bit_4.6.0         
+## [33] vroom_1.6.5        pkgconfig_2.0.3    pillar_1.11.0      gtable_0.3.6      
+## [37] glue_1.8.0         xfun_0.53          tidyselect_1.2.1   rstudioapi_0.17.1 
+## [41] farver_2.1.2       htmltools_0.5.8.1  nlme_3.1-168       rmarkdown_2.30    
+## [45] labeling_0.4.3     compiler_4.5.1
+\end{verbatim}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{End of Report}
+
+\end{document}
